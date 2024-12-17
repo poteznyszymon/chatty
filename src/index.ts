@@ -2,15 +2,22 @@ import { Hono } from "hono";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { env } from "./utils/config";
+import registerRouter from "./routes/auth/register.route";
+import loginRouter from "./routes/auth/login.route";
+import logoutRouter from "./routes/auth/logout.route";
+import myProfileRouter from "./routes/user/myProfile.route";
 
 const app = new Hono();
 
 const httpServer = createServer();
 const io = new Server(httpServer);
 
-app.get("/api/test", (c) => {
-  return c.json({ message: "test" });
-});
+app
+  .basePath("/api")
+  .route("/", registerRouter)
+  .route("/", loginRouter)
+  .route("/", logoutRouter)
+  .route("/", myProfileRouter);
 
 io.on("connection", (socket) => {
   console.log("User connected", socket.id);

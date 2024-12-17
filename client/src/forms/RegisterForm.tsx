@@ -41,7 +41,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input className="bg-black" placeholder="johndoe" {...field} />
+                <Input placeholder="johndoe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,11 +54,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  className="bg-black"
-                  placeholder="john@doe.com"
-                  {...field}
-                />
+                <Input placeholder="john@doe.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +67,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input className="bg-black" placeholder="" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

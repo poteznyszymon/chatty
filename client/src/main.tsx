@@ -7,7 +7,7 @@ import CustomRoutes from "./routes/routes.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <CustomRoutes />
     </ThemeProvider>
   </StrictMode>

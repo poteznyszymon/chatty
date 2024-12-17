@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 
 const RootLayout = () => {
   return (
-    <main className="min-h-screen flex bg-backgroundImage bg-opacity-30 bg-red-500 ">
+    <main className="min-h-screen flex bg-backgroundImage bg-primary/30 ">
       <Drawer />
       <Outlet />
     </main>

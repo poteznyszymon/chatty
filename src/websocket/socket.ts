@@ -8,16 +8,28 @@ const io = new Server(httpServer, {
   },
 });
 
-const activeUsers = {};
+const activeUsers: string[] = [];
 
 io.on("connection", (socket) => {
-  console.log("User connected", socket.id);
+  const userId = socket.handshake.query.userId as string;
 
-  const userId = socket.handshake.query.userId;
-  console.log(userId);
+  if (userId && !activeUsers.includes(userId)) {
+    activeUsers.push(userId);
+    console.log("User connected:", userId, "Socket ID:", socket.id);
+  }
+
+  io.emit("getOnlineUsers", activeUsers);
 
   socket.on("disconnect", () => {
-    console.log("User disconnect", socket.id);
+    if (userId) {
+      const index = activeUsers.indexOf(userId);
+      if (index !== -1) {
+        activeUsers.splice(index, 1);
+      }
+      console.log("User disconnected:", userId, "Socket ID:", socket.id);
+
+      io.emit("getOnlineUsers", activeUsers);
+    }
   });
 });
 

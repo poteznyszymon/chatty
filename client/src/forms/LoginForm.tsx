@@ -1,7 +1,5 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,22 +10,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const LoginForm = () => {
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(1),
-  });
+import { loginSchema, loginValues } from "../../../src/validation/schemas";
+import { InputWithPassword } from "@/components/shared/InputWithPassword";
+import LoadingButton from "@/components/shared/LoadingButton";
+import useLogin from "@/hooks/useLogin";
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+const LoginForm = () => {
+  const { loginUser, isLoading } = useLogin();
+
+  const form = useForm<loginValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: loginValues) => {
+    loginUser(values);
   };
   return (
     <Form {...form}>
@@ -39,7 +39,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@doe.com" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -52,15 +52,15 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <InputWithPassword {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <LoadingButton loading={isLoading} className="w-full" type="submit">
           Sign In
-        </Button>
+        </LoadingButton>
       </form>
     </Form>
   );

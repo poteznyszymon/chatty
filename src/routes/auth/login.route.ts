@@ -39,7 +39,11 @@ loginRouter.post("/login", async (c) => {
     await createAndSetRefreshToken(c, existingUser[0].id.toString());
 
     return c.json(
-      { success: true, message: "User logged in successfully" },
+      {
+        success: true,
+        user: existingUser,
+        message: "User logged in successfully",
+      },
       200
     );
   } catch (error) {

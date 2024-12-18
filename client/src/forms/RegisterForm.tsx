@@ -1,7 +1,5 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,15 +10,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const RegisterForm = () => {
-  const formSchema = z.object({
-    username: z.string().min(1),
-    email: z.string().email(),
-    password: z.string().min(1),
-  });
+import {
+  registerSchema,
+  registerValues,
+} from "../../../src/validation/schemas";
+import { InputWithPassword } from "@/components/shared/InputWithPassword";
+import LoadingButton from "@/components/shared/LoadingButton";
+import useRegister from "@/hooks/useRegister";
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+const RegisterForm = () => {
+  const { registerUser, isLoading } = useRegister();
+
+  const form = useForm<registerValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       username: "",
       email: "",
@@ -28,8 +30,8 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: registerValues) => {
+    registerUser(values);
   };
   return (
     <Form {...form}>
@@ -41,7 +43,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="johndoe" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,7 +56,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@doe.com" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -67,15 +69,15 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <InputWithPassword {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <LoadingButton loading={isLoading} className="w-full" type="submit">
           Sign Up
-        </Button>
+        </LoadingButton>
       </form>
     </Form>
   );

@@ -13,6 +13,10 @@ export const connectSocket = (userId: string) => {
       },
     });
   }
+
+  socket.on("getOnlineUsers", (usersId) => {
+    console.log(usersId);
+  });
 };
 
 export const disconnectSocket = () => {

@@ -18,3 +18,7 @@ export const loginSchema = z.object({
 
 export type loginValues = z.infer<typeof loginSchema>;
 export type registerValues = z.infer<typeof registerSchema>;
+
+export const createContactSchema = z.object({
+  contactId: z.number(),
+});

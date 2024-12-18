@@ -5,6 +5,8 @@ import registerRouter from "./routes/auth/register.route";
 import loginRouter from "./routes/auth/login.route";
 import logoutRouter from "./routes/auth/logout.route";
 import myProfileRouter from "./routes/user/myProfile.route";
+import { contactsRouter } from "./routes/user/contacts.route";
+
 import { httpServer } from "./websocket/socket";
 
 const app = new Hono();
@@ -14,7 +16,8 @@ app
   .route("/", registerRouter)
   .route("/", loginRouter)
   .route("/", logoutRouter)
-  .route("/", myProfileRouter);
+  .route("/", myProfileRouter)
+  .route("/contacts", contactsRouter);
 
 const server = Bun.serve({
   port: env.PORT,

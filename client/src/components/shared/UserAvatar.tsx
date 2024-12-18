@@ -7,7 +7,7 @@ interface UserAvatarProps {
 
 const UserAvatar = ({ className, url }: UserAvatarProps) => {
   return (
-    <div className={cn(className, "size-12 rounded-full bg-secondary")}>
+    <div className={cn(className, "size-10 rounded-full bg-secondary")}>
       {url && <img src={url} className="size-full object-contain" />}
     </div>
   );

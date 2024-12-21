@@ -15,7 +15,7 @@ export const createAndSetRefreshToken = async (c: Context, userId: string) => {
     path: "/",
     secure: NODE_ENV === "production",
     httpOnly: false,
-    maxAge: 10 * 60,
+    maxAge: 7 * 24 * 60 * 60,
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     sameSite: "Strict",
   });

@@ -1,5 +1,5 @@
+import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "../types/user";
 
 const useVerifyUser = () => {
   const { data: user, isLoading } = useQuery<User | null>({

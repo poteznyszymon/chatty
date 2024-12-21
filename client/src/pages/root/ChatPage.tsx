@@ -5,8 +5,8 @@ const ChatPage = () => {
   const { username } = useParams();
 
   return (
-    <div className="w-full flex flex-col">
-      <nav className="bg-card w-full h-[3rem] flex items-center px">
+    <div className="flex-1 flex flex-col">
+      <nav className="bg-card w-full h-[3rem] flex items-center px-1">
         <Link
           to="/"
           className="block sm:hidden hover:bg-secondary p-2 rounded-full"

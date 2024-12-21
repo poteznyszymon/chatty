@@ -67,3 +67,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px; /* Adjust the width for slimness */
+    height: 8px; /* Adjust the height for slimness */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted)); /* Use the muted foreground color */
+    border-radius: 4px; /* Add rounded corners */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted)); /* Darken slightly on hover */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent; /* Optional: Transparent or set a different background */
+  }
+}

@@ -16,7 +16,7 @@ import {
 } from "../../../src/validation/schemas";
 import { InputWithPassword } from "@/components/shared/InputWithPassword";
 import LoadingButton from "@/components/shared/LoadingButton";
-import useRegister from "@/hooks/useRegister";
+import useRegister from "@/hooks/auth/useRegister";
 
 const RegisterForm = () => {
   const { registerUser, isLoading } = useRegister();

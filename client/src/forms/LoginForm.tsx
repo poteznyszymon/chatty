@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, loginValues } from "../../../src/validation/schemas";
 import { InputWithPassword } from "@/components/shared/InputWithPassword";
 import LoadingButton from "@/components/shared/LoadingButton";
-import useLogin from "@/hooks/useLogin";
+import useLogin from "@/hooks/auth/useLogin";
 
 const LoginForm = () => {
   const { loginUser, isLoading } = useLogin();

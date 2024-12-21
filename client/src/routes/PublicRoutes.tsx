@@ -1,4 +1,4 @@
-import useVerifyUser from "@/hooks/useVerifyUser";
+import useVerifyUser from "@/hooks/auth/useVerifyUser";
 import { Loader2 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router";
 

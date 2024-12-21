@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { registerValues } from "../../../src/validation/schemas";
 import { connectSocket } from "@/utils/socket";
 import { User } from "@/types/user";
+import { registerValues } from "../../../../src/validation/schemas";
 
 const useRegister = () => {
   const queryClient = useQueryClient();

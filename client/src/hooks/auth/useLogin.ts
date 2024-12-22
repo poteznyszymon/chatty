@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { connectSocket } from "@/utils/socket";
 import { User } from "@/types/user";
 import { loginValues } from "../../../../src/validation/schemas";
 import { useToast } from "../use-toast";
+import { ConnectSocket } from "@/utils/socket";
 
 const useLogin = () => {
   const queryClient = useQueryClient();
@@ -33,7 +33,7 @@ const useLogin = () => {
     },
     onSuccess: (user: User) => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
-      connectSocket(user.id.toString());
+      ConnectSocket(user.id.toString());
     },
     onError: (error) => {
       toast({

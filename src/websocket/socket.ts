@@ -8,27 +8,39 @@ const io = new Server(httpServer, {
   },
 });
 
-const activeUsers: string[] = [];
+const activeUsers: Map<string, Set<string>> = new Map();
 
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId as string;
 
-  if (userId && !activeUsers.includes(userId)) {
-    activeUsers.push(userId);
-    console.log("User connected:", userId, "Socket ID:", socket.id);
-  }
+  if (userId) {
+    // Dodaj socket.id do zestawu dla userId
+    if (!activeUsers.has(userId)) {
+      activeUsers.set(userId, new Set());
+    }
+    activeUsers.get(userId)?.add(socket.id);
 
-  io.emit("getOnlineUsers", activeUsers);
+    console.log("User connected:", userId, "Socket ID:", socket.id);
+
+    // Emituj listę aktywnych użytkowników
+    io.emit("getOnlineUsers", Array.from(activeUsers.keys()));
+  }
 
   socket.on("disconnect", () => {
     if (userId) {
-      const index = activeUsers.indexOf(userId);
-      if (index !== -1) {
-        activeUsers.splice(index, 1);
+      // Usuń socket.id z zestawu userId
+      const userSockets = activeUsers.get(userId);
+      if (userSockets) {
+        userSockets.delete(socket.id);
+        if (userSockets.size === 0) {
+          activeUsers.delete(userId);
+        }
       }
+
       console.log("User disconnected:", userId, "Socket ID:", socket.id);
 
-      io.emit("getOnlineUsers", activeUsers);
+      // Emituj zaktualizowaną listę aktywnych użytkowników
+      io.emit("getOnlineUsers", Array.from(activeUsers.keys()));
     }
   });
 });

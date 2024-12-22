@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { connectSocket } from "@/utils/socket";
 import { User } from "@/types/user";
 import { registerValues } from "../../../../src/validation/schemas";
+import { ConnectSocket } from "@/utils/socket";
 
 const useRegister = () => {
   const queryClient = useQueryClient();
@@ -26,7 +26,7 @@ const useRegister = () => {
     },
     onSuccess: (user: User) => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
-      connectSocket(user.id.toString());
+      ConnectSocket(user.id.toString());
     },
   });
 

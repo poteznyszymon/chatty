@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <ActiveUsersProvider>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <CustomRoutes />
         <Toaster />
         <ReactQueryDevtools initialIsOpen={false} />

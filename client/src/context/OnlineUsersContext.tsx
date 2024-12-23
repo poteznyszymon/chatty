@@ -14,7 +14,6 @@ const ActiveUsersContext = createContext<ActiveUsersContextType | undefined>(
 export const ActiveUsersProvider = ({ children }: { children: ReactNode }) => {
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
 
-  // Zapisz setter w zmiennej globalnej
   globalSetActiveUsers = setActiveUsers;
 
   return (

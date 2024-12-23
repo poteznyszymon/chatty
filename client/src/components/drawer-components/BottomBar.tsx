@@ -12,6 +12,7 @@ const BottomBar = ({ username }: { username: string }) => {
         <h1 className="font-semibold">{username}</h1>
       </div>
       <Button
+        variant={"secondary"}
         disabled={isLoading}
         className="w-20"
         onClick={() => logoutUser()}

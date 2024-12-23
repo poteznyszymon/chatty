@@ -36,11 +36,9 @@ const ContactsList = () => {
             </label>
             <p className="text-xs">
               (
-              {
-                contacts?.filter((contact) =>
-                  activeUsers.includes(contact.id.toString())
-                ).length
-              }{" "}
+              {contacts?.filter((contact) =>
+                activeUsers.includes(contact.id.toString())
+              ).length || 0}{" "}
               users)
             </p>
           </div>

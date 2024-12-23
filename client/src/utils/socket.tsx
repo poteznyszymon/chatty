@@ -1,5 +1,5 @@
 import { setActiveUsersGlobally } from "@/context/OnlineUsersContext";
-import { io, Socket } from "socket.io-client";
+import { io, Socket,  } from "socket.io-client";
 
 const BASE_URL = "http://localhost:4000";
 
@@ -22,5 +22,6 @@ export const ConnectSocket = (userId: string) => {
 export const disconnectSocket = () => {
   if (socket) {
     socket.disconnect();
+    socket = null;
   }
 };

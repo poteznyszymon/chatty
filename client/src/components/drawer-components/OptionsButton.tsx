@@ -3,7 +3,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubTrigger,
@@ -18,10 +17,12 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { useTheme } from "../ui/theme-provider";
+import { UseSettingsPage } from "@/context/SettingsPageContext";
 
 const OptionsButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { setTheme, theme } = useTheme();
+  const { setIsProfileSettingsOpen } = UseSettingsPage();
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -39,8 +40,6 @@ const OptionsButton = () => {
             </DropdownMenuTrigger>
           </TooltipTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>Settings</DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <span>Theme</span>
@@ -65,11 +64,18 @@ const OptionsButton = () => {
                   <span>System</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
+              <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+                Profile
+              </DropdownMenuItem>
             </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-muted-foreground">
+              Chatyy 1.0
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <TooltipContent>
-          <p>Settings</p>
+          <p>Open menu</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

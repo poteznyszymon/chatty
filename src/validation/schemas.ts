@@ -1,6 +1,14 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, { message: "First name cannot be empty" })
+    .max(50, { message: "First name must be shorter than 50 characters" }),
+  secondName: z
+    .string()
+    .min(1, { message: "Second name cannot be empty" })
+    .max(50, { message: "Second name must be shorter than 50 characters" }),
   email: z.string().email({ message: "Wrong email format" }),
   username: z
     .string()

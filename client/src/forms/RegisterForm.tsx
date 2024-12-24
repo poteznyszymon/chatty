@@ -24,6 +24,8 @@ const RegisterForm = () => {
   const form = useForm<registerValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      firstName: "",
+      secondName: "",
       username: "",
       email: "",
       password: "",
@@ -36,6 +38,34 @@ const RegisterForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="flex gap-3">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="secondName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Second Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="username"

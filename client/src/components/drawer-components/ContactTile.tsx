@@ -17,8 +17,8 @@ const ContactTile = ({ contact }: ContactTileProps) => {
   return (
     <Link
       to={`${contact.username}`}
-      className={`flex px-2 items-center gap-3 hover:bg-secondary rounded-md p-1 group ${
-        pathname.slice(1) === contact.username ? "bg-secondary" : ""
+      className={`flex px-2 items-center gap-3 hover:bg-accent rounded-md p-1 group ${
+        pathname.slice(1) === contact.username ? "bg-accent" : ""
       }`}
     >
       <UserAvatar

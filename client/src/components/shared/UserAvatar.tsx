@@ -8,12 +8,7 @@ interface UserAvatarProps {
 
 const UserAvatar = ({ className, url, online }: UserAvatarProps) => {
   return (
-    <div
-      className={cn(
-        className,
-        " rounded-full overflow-hidden bg-background relative"
-      )}
-    >
+    <div className={cn(className, "rounded-full bg-background relative")}>
       <img
         src={url ? url : "/deafult-user.jpg"}
         className="size-full object-contain"

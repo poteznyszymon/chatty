@@ -52,7 +52,7 @@ const ContactsList = () => {
               </Button>
             </div>
           )}
-          {(isLoading || isRefetching) &&
+          {isLoading &&
             !isError &&
             Array.from({ length: 12 }).map((_, i) => (
               <ContactsSkeleton key={i} />

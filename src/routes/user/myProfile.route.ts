@@ -24,6 +24,8 @@ myProfileRouter.get("/my-profile", verifyAuth, async (c) => {
         success: true,
         user: {
           id: user.id,
+          firstName: user.firstName,
+          secondName: user.secondName,
           username: user.username,
           email: user.email,
         },

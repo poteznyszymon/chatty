@@ -17,11 +17,14 @@ const ContactTile = ({ contact }: ContactTileProps) => {
   return (
     <Link
       to={`${contact.username}`}
-      className={`flex items-center gap-2 hover:bg-secondary rounded-md p-1 group ${
+      className={`flex px-2 items-center gap-3 hover:bg-secondary rounded-md p-1 group ${
         pathname.slice(1) === contact.username ? "bg-secondary" : ""
       }`}
     >
-      <UserAvatar online={activeUsers.includes(contact.id.toString())} />
+      <UserAvatar
+        className="size-10"
+        online={activeUsers.includes(contact.id.toString())}
+      />
       <div>
         <p>{contact.username}</p>
         <p className="text-sm text-muted-foreground">

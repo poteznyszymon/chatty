@@ -1,6 +1,7 @@
 import { UseSettingsPage } from "@/context/SettingsPageContext";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, Pen } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import UserAvatar from "../shared/UserAvatar";
 
 interface ProfileDrawerProps {
   className?: string;
@@ -20,9 +21,9 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
             <ArrowLeft />
           </div>
           <h1 className="text-center font-medium">Profile</h1>
-          <div className="p-2 ml-auto rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer">
-            <Pen className="size-5" />
-          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <UserAvatar className="size-28" />
         </div>
       </div>
     </div>

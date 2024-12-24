@@ -8,7 +8,7 @@ const BottomBar = ({ username }: { username: string }) => {
   return (
     <div className="flex w-full h-[3.8rem] items-center justify-between">
       <div className="flex items-center gap-3">
-        <UserAvatar />
+        <UserAvatar className="size-10" />
         <h1 className="font-semibold">{username}</h1>
       </div>
       <Button

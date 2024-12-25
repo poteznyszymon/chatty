@@ -3,13 +3,14 @@ import { ArrowLeft, Mail, Pen, AtSign } from "lucide-react";
 import UserAvatar from "../shared/UserAvatar";
 import { User } from "@/types/user";
 import { useQueryClient } from "@tanstack/react-query";
+import { UseLayoutContext } from "@/context/LayoutContext";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { UseLayoutContext } from "@/context/LayoutContext";
 import UserInfoTile from "../shared/UserInfoTile";
 
 interface ProfileDrawerProps {
@@ -20,9 +21,17 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
   const queryClient = useQueryClient();
   const { setIsProfileSettingsOpen } = UseLayoutContext();
   const user = queryClient.getQueryData<User>(["auth-user"]);
+  const { isProfileSettingsOpen } = UseLayoutContext();
 
   return (
-    <div className={cn(className, "px-3")}>
+    <div
+      className={cn(
+        className,
+        `px-3 duration-500 xl:duration-300 transition-all z-10 h-full absolute ${
+          isProfileSettingsOpen ? "left-0" : "-left-[65rem] lg:-left-[26rem]"
+        }`
+      )}
+    >
       <div className="flex-1 flex flex-col">
         <div className="w-full h-[3.5rem] flex gap-3 items-center">
           <TooltipProvider>

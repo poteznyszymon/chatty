@@ -38,7 +38,7 @@ const ContactTile = ({ contact }: ContactTileProps) => {
         }}
         className="ml-auto p-1 group/box hover:bg-card rounded-full group-hover:flex hidden"
       >
-        <MoreVertical className="text-muted-foreground group-hover/box:text-primary-foreground" />
+        <MoreVertical className="text-muted-foreground group-hover/box:text-foreground" />
       </button>
     </Link>
   );

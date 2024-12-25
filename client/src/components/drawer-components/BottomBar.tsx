@@ -2,12 +2,18 @@ import useLogout from "@/hooks/auth/useLogout";
 import UserAvatar from "../shared/UserAvatar";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
+import { UseSettingsPage } from "@/context/SettingsPageContext";
 
 const BottomBar = ({ username }: { username: string }) => {
+  const { setIsProfileSettingsOpen } = UseSettingsPage();
+
   const { logoutUser, isLoading } = useLogout();
   return (
     <div className="flex w-full h-[3.8rem] items-center justify-between">
-      <div className="flex items-center gap-3">
+      <div
+        onClick={() => setIsProfileSettingsOpen(true)}
+        className="flex items-center gap-3 cursor-pointer"
+      >
         <UserAvatar className="size-10" />
         <h1 className="font-semibold">{username}</h1>
       </div>

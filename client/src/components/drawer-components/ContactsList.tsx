@@ -8,8 +8,7 @@ import { Button } from "../ui/button";
 import { useActiveUsers } from "@/context/OnlineUsersContext";
 
 const ContactsList = () => {
-  const { contacts, isLoading, isRefetching, refetch, isError } =
-    useGetContacts();
+  const { contacts, isLoading, refetch, isError } = useGetContacts();
   const { activeUsers } = useActiveUsers();
   const [showOnline, setShowOnline] = useState<boolean>(false);
 

@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router";
 import UserAvatar from "../shared/UserAvatar";
 import { useActiveUsers } from "@/context/OnlineUsersContext";
 import { MoreVertical } from "lucide-react";
+import { UseLayoutContext } from "@/context/LayoutContext";
 
 interface ContactTileProps {
   contact: {
@@ -13,9 +14,11 @@ interface ContactTileProps {
 const ContactTile = ({ contact }: ContactTileProps) => {
   const { activeUsers } = useActiveUsers();
   const { pathname } = useLocation();
+  const { setIsUserInfoOpen } = UseLayoutContext();
 
   return (
     <Link
+      onClick={() => setIsUserInfoOpen(false)}
       to={`${contact.username}`}
       className={`flex px-2 items-center gap-3 hover:bg-accent rounded-md p-1 group ${
         pathname.slice(1) === contact.username ? "bg-accent" : ""

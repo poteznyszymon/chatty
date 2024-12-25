@@ -7,7 +7,7 @@ import "./index.css";
 import CustomRoutes from "./routes/routes.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ActiveUsersProvider } from "./context/OnlineUsersContext.tsx";
-import { SettingsPageProvider } from "./context/SettingsPageContext.tsx";
+import { LayoutProvider } from "./context/LayoutContext.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <SettingsPageProvider>
+  <LayoutProvider>
     <ActiveUsersProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -28,5 +28,5 @@ createRoot(document.getElementById("root")!).render(
         </ThemeProvider>
       </QueryClientProvider>
     </ActiveUsersProvider>
-  </SettingsPageProvider>
+  </LayoutProvider>
 );

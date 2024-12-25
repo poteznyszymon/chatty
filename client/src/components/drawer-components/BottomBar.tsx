@@ -2,10 +2,10 @@ import useLogout from "@/hooks/auth/useLogout";
 import UserAvatar from "../shared/UserAvatar";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
-import { UseSettingsPage } from "@/context/SettingsPageContext";
+import { UseLayoutContext } from "@/context/LayoutContext";
 
 const BottomBar = ({ username }: { username: string }) => {
-  const { setIsProfileSettingsOpen } = UseSettingsPage();
+  const { setIsProfileSettingsOpen } = UseLayoutContext();
 
   const { logoutUser, isLoading } = useLogout();
   return (

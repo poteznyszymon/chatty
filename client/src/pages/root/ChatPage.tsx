@@ -1,21 +1,18 @@
-import { ArrowLeft } from "lucide-react";
-import { Link, useParams } from "react-router";
+import InfoBar from "@/components/chat-components/InfoBar";
+import Navbar from "@/components/chat-components/Navbar";
+import { useParams } from "react-router";
 
 const ChatPage = () => {
   const { username } = useParams();
 
   return (
-    <div className="flex-1 flex flex-col">
-      <nav className="bg-card w-full h-[3rem] flex items-center px-1">
-        <Link
-          to="/"
-          className="block sm:hidden hover:bg-secondary p-2 rounded-full"
-        >
-          <ArrowLeft className="text-muted-foreground" />
-        </Link>
-        <h1 className="text-lg m-auto">username: {username}</h1>
-      </nav>
-    </div>
+    <main className="flex flex-1">
+      <div className="flex-1 flex flex-col duration-300 transition-all">
+        <Navbar username={username || ""} />
+        <div className="flex flex-1 items-center justify-center">xd</div>
+      </div>
+      <InfoBar />
+    </main>
   );
 };
 

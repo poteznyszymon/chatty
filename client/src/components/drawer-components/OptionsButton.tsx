@@ -17,12 +17,12 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { useTheme } from "../ui/theme-provider";
-import { UseSettingsPage } from "@/context/SettingsPageContext";
+import { UseLayoutContext } from "@/context/LayoutContext";
 
 const OptionsButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { setTheme, theme } = useTheme();
-  const { setIsProfileSettingsOpen } = UseSettingsPage();
+  const { setIsProfileSettingsOpen } = UseLayoutContext();
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);

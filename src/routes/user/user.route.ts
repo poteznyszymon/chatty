@@ -37,6 +37,37 @@ userRouter.get("/my-profile", verifyAuth, async (c) => {
   }
 });
 
+userRouter.get("/profile/:username", verifyAuth, async (c) => {
+  try {
+    const username = c.req.param("username");
+
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.username, username));
+
+    if (!user) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
+    return c.json(
+      {
+        success: true,
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          secondName: user.secondName,
+          username: user.username,
+          email: user.email,
+        },
+      },
+      200
+    );
+  } catch (error) {
+    return c.json({ success: false, message: "Internal server error" });
+  }
+});
+
 userRouter.get("/search/:username", verifyAuth, async (c) => {
   try {
     const username = c.req.param("username");

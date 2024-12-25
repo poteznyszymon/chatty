@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { verifyAuth } from "../../middlewares/verifyAuth";
 import { db } from "../../db";
 import { users as usersTable } from "../../db/schema/user";
-import { eq, like } from "drizzle-orm";
+import { and, eq, like, ne } from "drizzle-orm";
 
 const userRouter = new Hono();
 
@@ -40,11 +40,17 @@ userRouter.get("/my-profile", verifyAuth, async (c) => {
 userRouter.get("/search/:username", verifyAuth, async (c) => {
   try {
     const username = c.req.param("username");
+    const userId = c.get("userId" as any) as number;
 
     const users = await db
       .select()
       .from(usersTable)
-      .where(like(usersTable.username, `%${username}%`));
+      .where(
+        and(
+          like(usersTable.username, `%${username}%`),
+          ne(usersTable.id, userId)
+        )
+      );
 
     if (users.length === 0) {
       return c.json({ success: false, message: "No users found" }, 404);

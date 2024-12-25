@@ -1,44 +1,44 @@
-import { Search } from "lucide-react";
+import { Check, Loader2, Plus, Search, X } from "lucide-react";
 import { Input } from "../ui/input";
 import OptionsButton from "./OptionsButton";
-import { useState, useRef, useEffect, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
+import useSearchUsers from "@/hooks/users/useSearchUsers";
+import UserAvatar from "../shared/UserAvatar";
+import { Link } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { User } from "@/types/user";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 const SearchBar = () => {
+  const queryClient = useQueryClient();
+
   const [showSearchAnswers, setShowSearchAnswers] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const searchBarRef = useRef<HTMLDivElement | null>(null);
+  const { users, refetch, isError, isLoading, isRefetching } =
+    useSearchUsers(inputValue);
+  const contacts = queryClient.getQueryData<User[]>(["contacts"]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
     setShowSearchAnswers(value.trim().length > 0);
+    refetch();
   };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      searchBarRef.current &&
-      !searchBarRef.current.contains(event.target as Node)
-    ) {
-      setShowSearchAnswers(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div
+      onMouseLeave={() => setShowSearchAnswers(false)}
       className="w-full h-[4rem] flex gap-1 items-center justify-center"
-      ref={searchBarRef}
     >
       <OptionsButton />
       <div className="relative w-full">
         <Input
-          className="pl-10 peer"
+          className="pl-10 peer pr-10"
           id="input"
           value={inputValue}
           onChange={handleInputChange}
@@ -46,9 +46,68 @@ const SearchBar = () => {
         <label htmlFor="input">
           <Search className="size-5 text-muted-foreground peer-focus:text-primary absolute top-1/2 -translate-y-1/2 left-2" />
         </label>
+        {inputValue && (
+          <div
+            onClick={() => {
+              setInputValue("");
+              setShowSearchAnswers(false);
+            }}
+            className="p-1 mr-1 hover:bg-card rounded-full absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground"
+          >
+            <X className="size-5" />
+          </div>
+        )}
         {showSearchAnswers && (
-          <div className="absolute top-12 w-full h-32 z-10 rounded-md bg-card border shadow-lg">
-            {/* Tu możesz dodać zawartość wyników */}
+          <div className="absolute top-12 w-full z-10 rounded-md bg-card border shadow-lg flex flex-col p-2">
+            {!isLoading &&
+              !isRefetching &&
+              users?.map((user) => (
+                <Link
+                  onClick={() => {
+                    setShowSearchAnswers(false);
+                    setInputValue("");
+                  }}
+                  to={`/${user.username}`}
+                  key={user.id}
+                  className="p-2 flex items-center gap-2 hover:bg-accent rounded-md"
+                >
+                  <UserAvatar className="size-8" />
+                  {user.username}
+
+                  {contacts?.find((contact) => contact.id === user.id) ? (
+                    <div className="ml-auto text-muted-foreground p-1 rounded-full">
+                      <Check className="" />
+                    </div>
+                  ) : (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="ml-auto">
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                            className="p-1 hover:bg-card rounded-full"
+                          >
+                            <Plus />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="">Add to contacts</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </Link>
+              ))}
+            {(!users || isError) && !isLoading && !isRefetching && (
+              <p className="p-2">No users found</p>
+            )}
+            {(isLoading || isRefetching) && (
+              <div className="p-2">
+                <Loader2 className="animate-spin mx-auto text-foreground" />
+              </div>
+            )}
           </div>
         )}
       </div>

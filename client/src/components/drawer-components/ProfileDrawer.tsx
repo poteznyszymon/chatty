@@ -21,7 +21,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
   const queryClient = useQueryClient();
   const { setIsProfileSettingsOpen } = UseLayoutContext();
   const user = queryClient.getQueryData<User>(["auth-user"]);
-  const { isProfileSettingsOpen } = UseLayoutContext();
+  const { isProfileSettingsOpen, setIsEditProfileOpen } = UseLayoutContext();
 
   return (
     <div
@@ -53,7 +53,10 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <div className="p-2 ml-auto rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer">
+                <div
+                  onClick={() => setIsEditProfileOpen(true)}
+                  className="p-2 ml-auto rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
+                >
                   <Pen className="size-5" />
                 </div>
               </TooltipTrigger>
@@ -64,7 +67,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
           </TooltipProvider>
         </div>
         <div className="flex flex-col items-center gap-3 mt-5">
-          <div className="overflow-hidden rounded-full cursor-pointer ">
+          <div className="overflow-hidden rounded-full">
             <UserAvatar className="size-[9rem] " />
           </div>
           <div className="flex items-center gap-1 font-semibold text-lg">

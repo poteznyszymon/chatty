@@ -12,7 +12,7 @@ export const registerSchema = z.object({
   email: z.string().email({ message: "Wrong email format" }),
   username: z
     .string()
-    .min(1, { message: "Username cannot be empty" })
+    .min(6, { message: "Username must be at lest 6 characters long." })
     .max(20, { message: "Username must be shorter than 20 characters" }),
   password: z.string(),
 });

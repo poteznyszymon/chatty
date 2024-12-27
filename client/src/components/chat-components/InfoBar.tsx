@@ -9,7 +9,7 @@ import { useActiveUsers } from "@/context/OnlineUsersContext";
 const InfoBar = () => {
   const { isUserInfoOpen, setIsUserInfoOpen } = UseLayoutContext();
   const { pathname } = useLocation();
-  const { user } = useGetUserData(pathname.slice(1));
+  const { user, isLoading } = useGetUserData(pathname.slice(1));
   const { activeUsers } = useActiveUsers();
 
   return (
@@ -26,27 +26,44 @@ const InfoBar = () => {
           <X />
         </div>
         <div className="flex items-center gap-1 text-lg font-semibold">
-          <p>{user?.username}</p>
-          <p>Info</p>
+          {!isLoading ? (
+            <>
+              <p>{user?.username}</p>
+              <p>Info</p>
+            </>
+          ) : (
+            <div className="w-32 h-4 rounded-md animate-pulse bg-accent" />
+          )}
         </div>
       </div>
       <UserAvatar className="size-[9rem]" />
       <div className="flex flex-col  justify-center items-center text-lg">
         <div className="flex gap-2 items-center font-semibold">
-          <p>{user?.firstName}</p>
-          <p>{user?.secondName}</p>
+          {!isLoading ? (
+            <>
+              <p>{user?.firstName}</p>
+              <p>{user?.secondName}</p>
+            </>
+          ) : (
+            <div className="w-32 h-6 rounded-md animate-pulse bg-accent" />
+          )}
         </div>
-        <p className="text-muted-foreground text-sm">
-          {activeUsers.includes(user?.id.toString() || "")
-            ? "Online"
-            : "Offline"}
-        </p>
+        {!isLoading ? (
+          <p className="text-muted-foreground text-sm">
+            {activeUsers.includes(user?.id.toString() || "")
+              ? "Online"
+              : "Offline"}
+          </p>
+        ) : (
+          <div className="w-24 h-4 mt-1 rounded-md animate-pulse bg-accent" />
+        )}
       </div>
       <UserInfoTile
         Icon={AtSign}
         title={user?.username || ""}
         subTitle="Username"
         toolTipText="Copy username to clipboard"
+        loading={isLoading}
       />
     </div>
   );

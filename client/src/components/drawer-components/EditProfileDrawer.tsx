@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
+import { useEffect, useState } from "react";
 
 interface EditProfileDrawerProps {
   className?: string;
@@ -20,6 +21,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
   const { isEditProfileOpen, setIsEditProfileOpen } = UseLayoutContext();
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<User>(["auth-user"]);
+  const [showButton, setShowButton] = useState(false);
 
   const form = useForm<editProfileValues>({
     resolver: zodResolver(editProfileSchema),
@@ -31,11 +33,14 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
   });
 
   const values = form.getValues();
-  const showButton =
-    values.firstName != user?.firstName ||
-    values.secondName != user?.secondName ||
-    values.username != user?.username;
-  console.log(showButton);
+
+  useEffect(() => {
+    setShowButton(
+      values.firstName != user?.firstName ||
+        values.secondName != user?.secondName ||
+        values.username != user?.username
+    );
+  }, [user?.firstName, user?.secondName, user?.username, values]);
 
   const onSubmit = (values: editProfileValues) => {
     console.log(values);
@@ -45,7 +50,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
     <div
       className={cn(
         className,
-        `duration-500 xl:duration-300 transition-all z-30 h-full absolute ${
+        `duration-500  xl:duration-300 transition-all z-30 h-full absolute ${
           isEditProfileOpen ? "left-0" : "-left-[65rem] lg:-left-[26rem]"
         }`
       )}
@@ -56,7 +61,10 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
             <Tooltip>
               <TooltipTrigger>
                 <div
-                  onClick={() => setIsEditProfileOpen(false)}
+                  onClick={() => {
+                    setShowButton(false);
+                    setIsEditProfileOpen(false);
+                  }}
                   className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
                 >
                   <ArrowLeft />
@@ -87,7 +95,9 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel className="text-muted-foreground">
+                    First Name
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -99,7 +109,9 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
               name="secondName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Second Name</FormLabel>
+                  <FormLabel className="text-muted-foreground">
+                    Second Name
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -111,20 +123,24 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-muted-foreground">
+                    Username
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <button
-              className={`bg-primary p-3 rounded-full fixed right-5 lg:left-[22rem] lg:right-auto flex items-center justify-center duration-300 ${
-                showButton ? "bottom-5 " : "-bottom-20 "
-              }`}
-            >
-              <Check className="size-6" />
-            </button>
+            {isEditProfileOpen && (
+              <button
+                className={`bg-primary p-3 rounded-full fixed right-5 lg:left-[22rem] lg:right-auto flex items-center justify-center duration-300 ${
+                  showButton ? "bottom-5 " : "-bottom-20 "
+                }`}
+              >
+                <Check className="size-6" />
+              </button>
+            )}
           </form>
         </Form>
         <div className="bg-accent px-3 py-3 text-sm text-muted-foreground flex flex-col gap-1">

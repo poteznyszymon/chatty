@@ -15,6 +15,7 @@ interface UserInfoTileProps {
   Icon: React.ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
   >;
+  loading?: boolean;
 }
 
 const UserInfoTile = ({
@@ -22,6 +23,7 @@ const UserInfoTile = ({
   subTitle,
   toolTipText,
   Icon,
+  loading,
 }: UserInfoTileProps) => {
   const [isCopied, setIsCopied] = useState([false, false]);
   const { toast } = useToast();
@@ -56,8 +58,16 @@ const UserInfoTile = ({
             >
               <Icon className="size-5 text-muted-foreground " />
               <div className="flex items-start flex-col">
-                {title}
-                <p className="text-muted-foreground text-sm">{subTitle}</p>
+                {!loading ? (
+                  <p>{title}</p>
+                ) : (
+                  <div className="w-28 rounded-md animate-pulse h-4 bg-accent " />
+                )}
+                {!loading ? (
+                  <p className="text-muted-foreground text-sm">{subTitle}</p>
+                ) : (
+                  <div className="w-16 mt-1 rounded-md animate-pulse h-4 bg-accent " />
+                )}
               </div>
               {isCopied[0] ? (
                 <Check className="size-5 hidden text-muted-foreground ml-auto group-hover/email:block" />

@@ -10,7 +10,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       backgroundImage: {
-        backgroundImage: "url('/bg.png')",
+        backgroundImage: "url('/bg3.png')",
       },
       colors: {
         background: "hsl(var(--background))",

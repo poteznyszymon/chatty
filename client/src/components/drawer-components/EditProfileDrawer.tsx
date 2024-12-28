@@ -1,6 +1,4 @@
 import { ArrowLeft, Check, ImagePlus } from "lucide-react";
-import { Tooltip, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
-import { TooltipContent } from "@radix-ui/react-tooltip";
 import { cn } from "@/lib/utils";
 import { UseLayoutContext } from "@/context/LayoutContext";
 import UserAvatar from "../shared/UserAvatar";
@@ -12,6 +10,7 @@ import { Input } from "../ui/input";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
 import { useEffect, useState } from "react";
+import CustomTooltip from "../shared/CustomTooltip";
 
 interface EditProfileDrawerProps {
   className?: string;
@@ -57,24 +56,17 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
     >
       <div className="flex-1 flex flex-col gap-5">
         <div className="px-3 w-full h-[3.5rem] flex gap-3 items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div
-                  onClick={() => {
-                    setShowButton(false);
-                    setIsEditProfileOpen(false);
-                  }}
-                  className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
-                >
-                  <ArrowLeft />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Back</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <CustomTooltip text="Back">
+            <div
+              onClick={() => {
+                setShowButton(false);
+                setIsEditProfileOpen(false);
+              }}
+              className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
+            >
+              <ArrowLeft />
+            </div>
+          </CustomTooltip>
           <h1 className="text-center font-medium mr-auto">Edit Profile</h1>
         </div>
         <div className="flex flex-col items-center gap-3 mt-5">

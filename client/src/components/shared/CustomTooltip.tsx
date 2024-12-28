@@ -16,8 +16,8 @@ const CustomTooltip = ({ text, children, classname }: CustomTooltipProps) => {
     ///test
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>{children}</TooltipTrigger>
-        <TooltipContent className={classname}>
+        <TooltipTrigger className={classname}>{children}</TooltipTrigger>
+        <TooltipContent>
           <p>{text}</p>
         </TooltipContent>
       </Tooltip>

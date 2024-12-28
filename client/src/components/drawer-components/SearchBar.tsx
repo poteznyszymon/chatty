@@ -7,12 +7,7 @@ import UserAvatar from "../shared/UserAvatar";
 import { Link } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import CustomTooltip from "../shared/CustomTooltip";
 
 const SearchBar = () => {
   const queryClient = useQueryClient();
@@ -79,24 +74,17 @@ const SearchBar = () => {
                       <Check className="" />
                     </div>
                   ) : (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger className="ml-auto">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
-                            }}
-                            className="p-1 hover:bg-card rounded-full"
-                          >
-                            <Plus />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="">Add to contacts</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <CustomTooltip text="Add to contacts">
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                        }}
+                        className="p-1 hover:bg-card rounded-full"
+                      >
+                        <Plus />
+                      </div>
+                    </CustomTooltip>
                   )}
                 </Link>
               ))}

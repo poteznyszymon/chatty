@@ -101,6 +101,7 @@ userRouter.get("/search/:username", verifyAuth, async (c) => {
           secondName: user.secondName,
           username: user.username,
           email: user.email,
+          imageUrl: user.imageUrl,
         })),
       },
       200

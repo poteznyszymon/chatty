@@ -66,7 +66,7 @@ const SearchBar = () => {
                   key={user.id}
                   className="p-2 flex items-center gap-2 hover:bg-accent rounded-md"
                 >
-                  <UserAvatar className="size-8" />
+                  <UserAvatar url={user.imageUrl || ""} className="size-8" />
                   {user.username}
 
                   {contacts?.find((contact) => contact.id === user.id) ? (
@@ -74,7 +74,7 @@ const SearchBar = () => {
                       <Check className="" />
                     </div>
                   ) : (
-                    <CustomTooltip text="Add to contacts">
+                    <CustomTooltip classname="ml-auto" text="Add to contacts">
                       <div
                         onClick={(e) => {
                           e.stopPropagation();

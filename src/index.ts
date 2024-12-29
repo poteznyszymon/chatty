@@ -6,8 +6,15 @@ import loginRouter from "./routes/auth/login.route";
 import logoutRouter from "./routes/auth/logout.route";
 import userRouter from "./routes/user/user.route";
 import { contactsRouter } from "./routes/contacts/contacts.route";
+import { v2 } from "cloudinary";
 
 import { httpServer } from "./websocket/socket";
+
+v2.config({
+  cloud_name: env.CLOUDINARY_CLOUD_NAME,
+  api_key: env.CLOUDINARY_API_KEY,
+  api_secret: env.CLOUDINARY_SECRET,
+});
 
 const app = new Hono();
 

@@ -11,7 +11,7 @@ const UserAvatar = ({ className, url, online }: UserAvatarProps) => {
     <div className={cn(className, "rounded-full bg-background relative")}>
       <img
         src={url ? url : "/deafult-user.jpg"}
-        className="size-full object-contain"
+        className="size-full object-cover rounded-full"
       />
 
       {online && (

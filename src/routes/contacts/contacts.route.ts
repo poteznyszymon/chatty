@@ -126,6 +126,7 @@ contactsRouter.get("/", verifyAuth, async (c) => {
         username: usersTable.username,
         email: usersTable.email,
         lastActive: usersTable.lastActive,
+        imageUrl: usersTable.imageUrl,
       })
       .from(contactsTable)
       .fullJoin(usersTable, eq(contactsTable.contactId, usersTable.id))

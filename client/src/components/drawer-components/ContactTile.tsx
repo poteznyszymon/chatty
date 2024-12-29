@@ -8,6 +8,7 @@ interface ContactTileProps {
   contact: {
     id: number;
     username: string;
+    imageUrl: string | null;
   };
 }
 
@@ -25,6 +26,7 @@ const ContactTile = ({ contact }: ContactTileProps) => {
       }`}
     >
       <UserAvatar
+        url={contact.imageUrl || ""}
         className="size-10"
         online={activeUsers.includes(contact.id.toString())}
       />

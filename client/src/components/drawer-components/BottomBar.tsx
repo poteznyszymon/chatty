@@ -3,9 +3,12 @@ import UserAvatar from "../shared/UserAvatar";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { UseLayoutContext } from "@/context/LayoutContext";
+import { useQuery } from "@tanstack/react-query";
+import { User } from "@/types/user";
 
-const BottomBar = ({ username }: { username: string }) => {
+const BottomBar = () => {
   const { setIsProfileSettingsOpen } = UseLayoutContext();
+  const { data: user } = useQuery<User | null>({ queryKey: ["auth-user"] });
 
   const { logoutUser, isLoading } = useLogout();
   return (
@@ -14,8 +17,8 @@ const BottomBar = ({ username }: { username: string }) => {
         onClick={() => setIsProfileSettingsOpen(true)}
         className="flex items-center gap-3 cursor-pointer"
       >
-        <UserAvatar className="size-10" />
-        <h1 className="font-semibold">{username}</h1>
+        <UserAvatar url={user?.imageUrl || ""} className="size-10" />
+        <h1 className="font-semibold">{user?.username}</h1>
       </div>
       <Button
         variant={"secondary"}

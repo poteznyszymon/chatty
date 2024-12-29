@@ -2,9 +2,14 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router";
 import UserAvatar from "../shared/UserAvatar";
 import { UseLayoutContext } from "@/context/LayoutContext";
+import { useQuery } from "@tanstack/react-query";
+import { User } from "@/types/user";
 
 const Navbar = ({ username }: { username: string }) => {
   const { setIsUserInfoOpen } = UseLayoutContext();
+  const { data: user } = useQuery<User | null>({
+    queryKey: ["user", `${username}`],
+  });
 
   return (
     <nav
@@ -19,7 +24,7 @@ const Navbar = ({ username }: { username: string }) => {
       </Link>
 
       <div className="flex items-center gap-2 ">
-        <UserAvatar className="size-10" />
+        <UserAvatar url={user?.imageUrl || ""} className="size-10" />
         <p>{username}</p>
       </div>
     </nav>

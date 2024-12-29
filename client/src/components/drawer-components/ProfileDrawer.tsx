@@ -48,7 +48,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
         </div>
         <div className="flex flex-col items-center gap-3 mt-5">
           <div className="overflow-hidden rounded-full">
-            <UserAvatar className="size-[9rem] " />
+            <UserAvatar url={user?.imageUrl || ""} className="size-[9rem] " />
           </div>
           <div className="flex items-center gap-1 font-semibold text-lg">
             <p>{user?.firstName}</p>

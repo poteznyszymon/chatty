@@ -1,16 +1,20 @@
-import { ArrowLeft, Check, ImagePlus } from "lucide-react";
+import { ArrowLeft, Check, ImagePlus, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UseLayoutContext } from "@/context/LayoutContext";
 import UserAvatar from "../shared/UserAvatar";
 import { useForm } from "react-hook-form";
-import { editProfileSchema, editProfileValues } from "@/validation/schemas";
+import {
+  editProfileSchema,
+  editProfileValues,
+} from "../../../../src/validation/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
-import { useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import CustomTooltip from "../shared/CustomTooltip";
+import useEditUserData from "@/hooks/users/useEditUserData";
+import { useQuery } from "@tanstack/react-query";
 
 interface EditProfileDrawerProps {
   className?: string;
@@ -18,9 +22,11 @@ interface EditProfileDrawerProps {
 
 const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
   const { isEditProfileOpen, setIsEditProfileOpen } = UseLayoutContext();
-  const queryClient = useQueryClient();
-  const user = queryClient.getQueryData<User>(["auth-user"]);
+  const { data: user } = useQuery<User | null>({ queryKey: ["auth-user"] });
   const [showButton, setShowButton] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+
+  const { editUser, isLoading } = useEditUserData();
 
   const form = useForm<editProfileValues>({
     resolver: zodResolver(editProfileSchema),
@@ -28,6 +34,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
       firstName: user?.firstName,
       secondName: user?.secondName,
       username: user?.username,
+      image: null,
     },
   });
 
@@ -35,14 +42,29 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
 
   useEffect(() => {
     setShowButton(
-      values.firstName != user?.firstName ||
-        values.secondName != user?.secondName ||
-        values.username != user?.username
+      values.firstName !== user?.firstName ||
+        values.secondName !== user?.secondName ||
+        values.username !== user?.username ||
+        image !== null
     );
-  }, [user?.firstName, user?.secondName, user?.username, values]);
+  }, [user?.firstName, user?.secondName, user?.username, values, image]);
 
   const onSubmit = (values: editProfileValues) => {
-    console.log(values);
+    editUser(values);
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result as string);
+          form.setValue("image", reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -61,6 +83,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
               onClick={() => {
                 setShowButton(false);
                 setIsEditProfileOpen(false);
+                setImage(null);
               }}
               className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
             >
@@ -69,14 +92,26 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
           </CustomTooltip>
           <h1 className="text-center font-medium mr-auto">Edit Profile</h1>
         </div>
-        <div className="flex flex-col items-center gap-3 mt-5">
+        <label
+          htmlFor="image-input"
+          className="flex flex-col items-center gap-3 mt-5"
+        >
           <div className="overflow-hidden rounded-full relative group cursor-pointer">
-            <UserAvatar className="size-[9rem] " />
+            <UserAvatar
+              url={image ? image : user?.imageUrl ? user.imageUrl : ""}
+              className="size-[9rem] "
+            />
+            <input
+              onChange={(e) => handleImageChange(e)}
+              type="file"
+              hidden
+              id="image-input"
+            />
             <div className="absolute bg-card/50 size-full flex items-center justify-center rounded-full p-2  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <ImagePlus className="size-10 group-hover:size-14 duration-300" />
             </div>
           </div>
-        </div>
+        </label>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -126,11 +161,15 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
             />
             {isEditProfileOpen && (
               <button
-                className={`bg-primary p-3 rounded-full fixed right-5 lg:left-[22rem] lg:right-auto flex items-center justify-center duration-300 ${
+                className={`bg-primary p-3 rounded-full fixed right-20 lg:left-[22rem] lg:right-auto flex items-center justify-center duration-300 ${
                   showButton ? "bottom-5 " : "-bottom-20 "
                 }`}
               >
-                <Check className="size-6" />
+                {!isLoading ? (
+                  <Check className="size-6" />
+                ) : (
+                  <Loader2 className="size-6 animate-spin" />
+                )}
               </button>
             )}
           </form>

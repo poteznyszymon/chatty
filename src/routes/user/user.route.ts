@@ -31,6 +31,7 @@ userRouter.get("/my-profile", verifyAuth, async (c) => {
           secondName: user.secondName,
           username: user.username,
           email: user.email,
+          imageUrl: user.imageUrl,
         },
       },
       200
@@ -62,6 +63,7 @@ userRouter.get("/profile/:username", verifyAuth, async (c) => {
           secondName: user.secondName,
           username: user.username,
           email: user.email,
+          imageUrl: user.imageUrl,
         },
       },
       200
@@ -99,6 +101,7 @@ userRouter.get("/search/:username", verifyAuth, async (c) => {
           secondName: user.secondName,
           username: user.username,
           email: user.email,
+          imageUrl: user.imageUrl,
         })),
       },
       200

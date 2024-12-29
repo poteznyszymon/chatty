@@ -36,7 +36,7 @@ const InfoBar = () => {
           )}
         </div>
       </div>
-      <UserAvatar className="size-[9rem]" />
+      <UserAvatar url={user?.imageUrl || ""} className="size-[9rem]" />
       <div className="flex flex-col  justify-center items-center text-lg">
         <div className="flex gap-2 items-center font-semibold">
           {!isLoading ? (

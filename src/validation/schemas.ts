@@ -30,3 +30,24 @@ export type registerValues = z.infer<typeof registerSchema>;
 export const createContactSchema = z.object({
   contactId: z.number(),
 });
+
+export const editProfileSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, { message: "First name cannot be empty" })
+    .max(50, { message: "First name must be shorter than 50 characters" })
+    .optional(),
+  secondName: z
+    .string()
+    .min(1, { message: "Second name cannot be empty" })
+    .max(50, { message: "Second name must be shorter than 50 characters" })
+    .optional(),
+  username: z
+    .string()
+    .min(6, { message: "Username must be at least 6 characters long." })
+    .max(20, { message: "Username must be shorter than 20 characters" })
+    .optional(),
+  image: z.string().optional().nullable(),
+});
+
+export type editProfileValues = z.infer<typeof editProfileSchema>;

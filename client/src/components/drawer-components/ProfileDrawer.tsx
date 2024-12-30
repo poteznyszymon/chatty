@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ArrowLeft, Mail, Pen, AtSign } from "lucide-react";
+import { ArrowLeft, Mail, AtSign, UserPen } from "lucide-react";
 import UserAvatar from "../shared/UserAvatar";
 import { User } from "@/types/user";
 import { useQueryClient } from "@tanstack/react-query";
@@ -33,7 +33,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
               onClick={() => setIsProfileSettingsOpen(false)}
               className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
             >
-              <ArrowLeft />
+              <ArrowLeft className="size-6" />
             </div>
           </CustomTooltip>
           <h1 className="text-center font-medium mr-auto">Profile</h1>
@@ -42,7 +42,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
               onClick={() => setIsEditProfileOpen(true)}
               className="p-2 ml-auto rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
             >
-              <Pen className="size-5" />
+              <UserPen className="size-6" />
             </div>
           </CustomTooltip>
         </div>

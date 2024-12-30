@@ -7,7 +7,7 @@ import { User } from "@/types/user";
 
 const Navbar = ({ username }: { username: string }) => {
   const { setIsUserInfoOpen } = UseLayoutContext();
-  const { data: user } = useQuery<User | null>({
+  const { data: user, isLoading } = useQuery<User | null>({
     queryKey: ["user", `${username}`],
   });
 
@@ -25,7 +25,11 @@ const Navbar = ({ username }: { username: string }) => {
 
       <div className="flex items-center gap-2 ">
         <UserAvatar url={user?.imageUrl || ""} className="size-10" />
-        <p>{username}</p>
+        {!isLoading ? (
+          <p>{username}</p>
+        ) : (
+          <div className="w-20 rounded-md anima h-4 bg-accent" />
+        )}
       </div>
     </nav>
   );

@@ -1,4 +1,4 @@
-import { Check, Loader2, Plus, Search, X } from "lucide-react";
+import { Loader2, Search, UserCheck, UserPlus, X } from "lucide-react";
 import { Input } from "../ui/input";
 import OptionsButton from "./OptionsButton";
 import { useState, ChangeEvent } from "react";
@@ -70,8 +70,8 @@ const SearchBar = () => {
                   {user.username}
 
                   {contacts?.find((contact) => contact.id === user.id) ? (
-                    <div className="ml-auto text-muted-foreground p-1 rounded-full">
-                      <Check className="" />
+                    <div className="ml-auto text-muted-foreground p-2 rounded-full">
+                      <UserCheck className="size-5" />
                     </div>
                   ) : (
                     <CustomTooltip classname="ml-auto" text="Add to contacts">
@@ -80,9 +80,9 @@ const SearchBar = () => {
                           e.stopPropagation();
                           e.preventDefault();
                         }}
-                        className="p-1 hover:bg-card rounded-full"
+                        className="p-2 hover:bg-card rounded-full"
                       >
-                        <Plus />
+                        <UserPlus className="size-5" />
                       </div>
                     </CustomTooltip>
                   )}

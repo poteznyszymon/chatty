@@ -1,6 +1,7 @@
 import { SendHorizonal, Smile, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { AutosizeTextarea } from "../ui/textarea";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
 const ChatInput = () => {
   const [openEmojiPanel, setOpenEmojiPanel] = useState(false);
@@ -19,10 +20,20 @@ const ChatInput = () => {
         <div className="min-h-[3rem] flex items-center w-full px-3">
           <div
             onClick={() => setOpenEmojiPanel(!openEmojiPanel)}
-            className="text-muted-foreground p-1 hover:bg-accent rounded-full cursor-pointer group"
+            className="text-muted-foreground p-1 hover:bg-accent rounded-full relative cursor-pointer group"
           >
             <Smile className="group-hover:text-primary" />
+            {openEmojiPanel && (
+              <div className="absolute bottom-10">
+                <EmojiPicker
+                  onEmojiClick={(emoji: EmojiClickData) => {
+                    setUserInput((prev) => prev + emoji.emoji);
+                  }}
+                />
+              </div>
+            )}
           </div>
+
           <AutosizeTextarea
             value={userInput}
             onChange={handleInputChange}

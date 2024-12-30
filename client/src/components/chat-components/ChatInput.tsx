@@ -39,17 +39,15 @@ const ChatInput = () => {
           )}
         </div>
         {userInput.length > 160 && (
-          <div className="absolute right-2 bottom-2 text-xs text-muted-foreground">
-            <p className={`${userInput.length > 190 ? "text-red-500" : ""}`}>
-              {userInput.length}/200
-            </p>
+          <div className="absolute right-2 bottom-2 text-xs text-muted-foreground bg-accent p-1 rounded-md">
+            <p>{userInput.length}/200</p>
           </div>
         )}
       </div>
-      <div className="bg-background">
+      <div className="bg-background rounded-full">
         <button
           disabled={!userInput}
-          className="size-[3rem] aspect-square bg-primary disabled:bg-primary/50 rounded-full flex items-center justify-center"
+          className="size-[3rem] aspect-square bg-primary disabled:bg-primary/70 rounded-full flex items-center justify-center"
         >
           <SendHorizonal className="text-white size-5" />
         </button>

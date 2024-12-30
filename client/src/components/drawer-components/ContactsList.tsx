@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useGetContacts from "@/hooks/contacts/useGetContacts";
-import { User } from "lucide-react";
+import { Users } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import ContactTile from "./ContactTile";
 import ContactsSkeleton from "./ContactsSkeleton";
@@ -21,7 +21,7 @@ const ContactsList = () => {
       <div className="flex flex-col gap-3">
         <div className="flex text-muted-foreground items-center justify-between">
           <div className="flex items-center gap-1">
-            <User className="size-4" />
+            <Users className="size-4" />
             <p className="text-sm">Contacts</p>
           </div>
           <div className="flex items-center gap-2">

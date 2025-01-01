@@ -28,6 +28,15 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
       .from(usersTable)
       .where(eq(usersTable.id, userId));
 
+    const [receiver] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, messageData.receiverId));
+
+    if (!user || !receiver) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
     const [inContacts] = await db
       .select()
       .from(contactsTable)
@@ -43,10 +52,6 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
         { success: false, message: "User is not in your contacts" },
         401
       );
-    }
-
-    if (!user) {
-      return c.json({ success: false, message: "User not found" }, 404);
     }
 
     const newMessage = await db
@@ -78,6 +83,33 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
     }
     return c.json({ success: false, message: "Internal server error" });
   }
+});
+
+messagesRouter.get("/get-messages/:receiverId", verifyAuth, async (c) => {
+  const userId = c.get("userId" as any) as number;
+  const receiverId = parseInt(c.req.param("receiverId"));
+
+  const [receiver] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.id, receiverId));
+
+  if (!receiver) {
+    return c.json({ success: false, message: "User not found" }, 404);
+  }
+
+  const messages = await db
+    .select()
+    .from(messageTable)
+    .where(
+      and(
+        eq(messageTable.senderId, userId),
+        eq(messageTable.receiverId, receiverId)
+      )
+    )
+    .orderBy(messageTable.sentAt);
+
+  return c.json({ success: true, messages: messages });
 });
 
 export default messagesRouter;

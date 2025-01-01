@@ -51,3 +51,13 @@ export const editProfileSchema = z.object({
 });
 
 export type editProfileValues = z.infer<typeof editProfileSchema>;
+
+export const createMessageSchema = z.object({
+  receiverId: z.number(),
+  content: z
+    .string()
+    .min(1, { message: "Message cannot be empty" })
+    .max(200, { message: "Message must be shorter than 200 characters" }),
+});
+
+export type createMessageValues = z.infer<typeof createMessageSchema>;

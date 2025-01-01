@@ -7,7 +7,7 @@ import { users as usersTable } from "../../db/schema/user";
 import { eq } from "drizzle-orm";
 import { contacts as contactsTable } from "../../db/schema/contact";
 
-export const contactsRouter = new Hono();
+const contactsRouter = new Hono();
 
 contactsRouter.post("/", verifyAuth, async (c) => {
   try {
@@ -144,3 +144,5 @@ contactsRouter.get("/", verifyAuth, async (c) => {
     );
   }
 });
+
+export default contactsRouter;

@@ -5,7 +5,9 @@ import registerRouter from "./routes/auth/register.route";
 import loginRouter from "./routes/auth/login.route";
 import logoutRouter from "./routes/auth/logout.route";
 import userRouter from "./routes/user/user.route";
-import { contactsRouter } from "./routes/contacts/contacts.route";
+import messagesRouter from "./routes/messages/messages.route";
+import contactsRouter from "./routes/contacts/contacts.route";
+
 import { v2 } from "cloudinary";
 
 import { httpServer } from "./websocket/socket";
@@ -24,6 +26,7 @@ app
   .route("/", loginRouter)
   .route("/", logoutRouter)
   .route("/", userRouter)
+  .route("/messages", messagesRouter)
   .route("/contacts", contactsRouter);
 
 const server = Bun.serve({

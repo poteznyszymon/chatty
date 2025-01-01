@@ -111,8 +111,6 @@ userRouter.get("/search/:username", verifyAuth, async (c) => {
   }
 });
 
-export default userRouter;
-
 userRouter.put("/edit", verifyAuth, async (c) => {
   try {
     const data = await c.req.json();
@@ -172,3 +170,5 @@ userRouter.put("/edit", verifyAuth, async (c) => {
     return c.json({ success: false, message: "Internal server error" });
   }
 });
+
+export default userRouter;

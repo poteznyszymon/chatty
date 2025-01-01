@@ -1,11 +1,13 @@
 import { SendHorizonal, Smile, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { AutosizeTextarea } from "../ui/textarea";
-import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+import { useTheme } from "../ui/theme-provider";
 
 const ChatInput = () => {
   const [openEmojiPanel, setOpenEmojiPanel] = useState(false);
   const [userInput, setUserInput] = useState("");
+  const { theme } = useTheme();
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
@@ -26,6 +28,7 @@ const ChatInput = () => {
             {openEmojiPanel && (
               <div className="absolute bottom-10">
                 <EmojiPicker
+                  theme={theme === "dark" ? Theme.DARK : Theme.LIGHT}
                   onEmojiClick={(emoji: EmojiClickData) => {
                     setUserInput((prev) => prev + emoji.emoji);
                   }}

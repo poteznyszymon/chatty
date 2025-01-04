@@ -14,7 +14,7 @@ const Navbar = ({ username }: { username: string }) => {
   return (
     <nav
       onClick={() => setIsUserInfoOpen(true)}
-      className="bg-card w-full h-[4rem] flex items-center px-2 md:px-5 gap-2 cursor-pointer"
+      className="bg-card w-full fixed h-[4rem] flex items-center px-2 md:px-5 gap-2 cursor-pointer"
     >
       <Link
         to="/"
@@ -22,7 +22,6 @@ const Navbar = ({ username }: { username: string }) => {
       >
         <ArrowLeft className="text-muted-foreground" />
       </Link>
-
       <div className="flex items-center gap-2 ">
         <UserAvatar url={user?.imageUrl || ""} className="size-10" />
         {!isLoading ? (

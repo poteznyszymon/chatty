@@ -6,7 +6,7 @@ import { db } from "../../db";
 import { users as usersTable } from "../../db/schema/user";
 import { messages as messageTable } from "../../db/schema/message";
 import { contacts as contactsTable } from "../../db/schema/contact";
-import { and, eq } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 
 const messagesRouter = new Hono();
 
@@ -16,13 +16,6 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
     const messageData = createMessageSchema.parse(data);
     const userId = c.get("userId" as any) as number;
 
-    if (userId === messageData.receiverId) {
-      return c.json(
-        { success: false, message: "You cannot send message to yourself" },
-        401
-      );
-    }
-
     const [user] = await db
       .select()
       .from(usersTable)
@@ -31,7 +24,14 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
     const [receiver] = await db
       .select()
       .from(usersTable)
-      .where(eq(usersTable.id, messageData.receiverId));
+      .where(eq(usersTable.username, messageData.username));
+
+    if (userId === receiver.id) {
+      return c.json(
+        { success: false, message: "You cannot send message to yourself" },
+        401
+      );
+    }
 
     if (!user || !receiver) {
       return c.json({ success: false, message: "User not found" }, 404);
@@ -40,12 +40,7 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
     const [inContacts] = await db
       .select()
       .from(contactsTable)
-      .where(
-        and(
-          eq(contactsTable.userId, userId),
-          eq(contactsTable.contactId, messageData.receiverId)
-        )
-      );
+      .where(eq(contactsTable.userId, userId));
 
     if (!inContacts) {
       return c.json(
@@ -54,11 +49,13 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
       );
     }
 
-    const newMessage = await db
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    const [newMessage] = await db
       .insert(messageTable)
       .values({
         senderId: userId,
-        receiverId: messageData.receiverId,
+        receiverId: receiver.id,
         content: messageData.content,
       })
       .returning();
@@ -85,14 +82,14 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
   }
 });
 
-messagesRouter.get("/get-messages/:receiverId", verifyAuth, async (c) => {
+messagesRouter.get("/get-messages/:username", verifyAuth, async (c) => {
   const userId = c.get("userId" as any) as number;
-  const receiverId = parseInt(c.req.param("receiverId"));
+  const username = c.req.param("username");
 
   const [receiver] = await db
     .select()
     .from(usersTable)
-    .where(eq(usersTable.id, receiverId));
+    .where(eq(usersTable.username, username));
 
   if (!receiver) {
     return c.json({ success: false, message: "User not found" }, 404);
@@ -102,9 +99,15 @@ messagesRouter.get("/get-messages/:receiverId", verifyAuth, async (c) => {
     .select()
     .from(messageTable)
     .where(
-      and(
-        eq(messageTable.senderId, userId),
-        eq(messageTable.receiverId, receiverId)
+      or(
+        and(
+          eq(messageTable.senderId, userId),
+          eq(messageTable.receiverId, receiver.id)
+        ),
+        and(
+          eq(messageTable.senderId, receiver.id),
+          eq(messageTable.receiverId, userId)
+        )
       )
     )
     .orderBy(messageTable.sentAt);

@@ -53,7 +53,7 @@ export const editProfileSchema = z.object({
 export type editProfileValues = z.infer<typeof editProfileSchema>;
 
 export const createMessageSchema = z.object({
-  receiverId: z.number(),
+  username: z.string(),
   content: z
     .string()
     .min(1, { message: "Message cannot be empty" })

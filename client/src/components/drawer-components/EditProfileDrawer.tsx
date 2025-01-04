@@ -71,7 +71,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
     <div
       className={cn(
         className,
-        `duration-500  xl:duration-300 transition-all z-30 h-full absolute ${
+        `duration-500  xl:duration-300 transition-all z-30 h-full fixed overflow-y-scroll ${
           isEditProfileOpen ? "left-0" : "-left-[65rem] lg:-left-[26rem]"
         }`
       )}

@@ -14,7 +14,7 @@ const InfoBar = () => {
 
   return (
     <div
-      className={`h-full shadow-lg px-3 items-center gap-3 flex flex-col w-[25rem] bg-card border-l duration-300 transition-all fixed ${
+      className={`h-full shadow-lg z-30 px-3 items-center gap-3 flex flex-col w-[25rem] bg-card border-l duration-300 transition-all fixed ${
         isUserInfoOpen ? "right-0" : "-right-[25rem]"
       }`}
     >

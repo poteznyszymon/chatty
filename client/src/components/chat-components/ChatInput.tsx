@@ -5,6 +5,8 @@ import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import { useTheme } from "../ui/theme-provider";
 import useSendMessage from "@/hooks/messages/useSendMessage";
 import { useLocation } from "react-router";
+import { User } from "@/types/user";
+import { useQuery } from "@tanstack/react-query";
 
 const ChatInput = () => {
   const { pathname } = useLocation();
@@ -16,6 +18,9 @@ const ChatInput = () => {
     userInput,
     { onSucess: () => setUserInput("") }
   );
+  const { isLoading: isUserLoading } = useQuery<User | null>({
+    queryKey: ["user", `${pathname.slice(1)}`],
+  });
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
@@ -77,7 +82,7 @@ const ChatInput = () => {
           disabled={!userInput || isLoading}
           className="size-[3rem] aspect-square bg-primary disabled:bg-primary/70 rounded-full flex items-center justify-center"
         >
-          {!isLoading ? (
+          {!isLoading && !isUserLoading ? (
             <SendHorizonal className="text-white size-5" />
           ) : (
             <Loader2 className="size-5 animate-spin" />

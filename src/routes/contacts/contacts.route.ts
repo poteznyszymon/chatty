@@ -147,6 +147,15 @@ contactsRouter.get("/get-contacts", verifyAuth, async (c) => {
   try {
     const userId = c.get("userId" as any) as number;
 
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
+
+    if (!user) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
     const contacts = await db
       .select({
         id: usersTable.id,
@@ -175,6 +184,37 @@ contactsRouter.get("/get-contacts", verifyAuth, async (c) => {
       },
       500
     );
+  }
+});
+
+contactsRouter.get("/get-contacts-requests", verifyAuth, async (c) => {
+  try {
+    const userId = c.get("userId" as any) as number;
+
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
+
+    if (!user) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
+    const [contactsRequests] = await db
+      .select({
+        id: usersTable.id,
+        username: usersTable.username,
+        email: usersTable.email,
+        lastActive: usersTable.lastActive,
+        imageUrl: usersTable.imageUrl,
+      })
+      .from(contactsTable)
+      .innerJoin(usersTable, eq(contactsTable.confirmed, false))
+      .where(eq(contactsTable.userId, userId));
+
+    return c.json({ success: true, requests: contactsRequests });
+  } catch (error) {
+    return c.json({ success: false, message: "Internal server error" }, 500);
   }
 });
 

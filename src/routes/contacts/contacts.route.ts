@@ -4,16 +4,26 @@ import { z } from "zod";
 import { createContactSchema } from "../../validation/schemas";
 import { db } from "../../db";
 import { users as usersTable } from "../../db/schema/user";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { contacts as contactsTable } from "../../db/schema/contact";
 
 const contactsRouter = new Hono();
 
-contactsRouter.post("/", verifyAuth, async (c) => {
+contactsRouter.post("/add-contact", verifyAuth, async (c) => {
   try {
     const data = await c.req.json();
     const userId = c.get("userId" as any) as number;
     const { contactId } = createContactSchema.parse(data);
+
+    if (Number(userId) === contactId) {
+      return c.json(
+        {
+          success: false,
+          message: "You can't send contact request to yourself",
+        },
+        400
+      );
+    }
 
     const [contactUser] = await db
       .select()
@@ -29,6 +39,23 @@ contactsRouter.post("/", verifyAuth, async (c) => {
       return c.json({ success: false, message: "User not found" }, 404);
     }
 
+    const [alreadySent] = await db
+      .select()
+      .from(contactsTable)
+      .where(
+        and(
+          eq(contactsTable.userId, userId),
+          eq(contactsTable.contactId, contactId)
+        )
+      );
+
+    if (alreadySent) {
+      return c.json(
+        { success: false, message: "Contact request already sent" },
+        400
+      );
+    }
+
     await db.insert(contactsTable).values({
       userId,
       contactId,
@@ -37,7 +64,7 @@ contactsRouter.post("/", verifyAuth, async (c) => {
     return c.json({
       success: true,
       user: contactUser,
-      message: "User added successfully to contacts",
+      message: `Contact request sent to user with id: ${contactId}`,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -116,7 +143,7 @@ contactsRouter.delete("/", verifyAuth, async (c) => {
   }
 });
 
-contactsRouter.get("/", verifyAuth, async (c) => {
+contactsRouter.get("/get-contacts", verifyAuth, async (c) => {
   try {
     const userId = c.get("userId" as any) as number;
 
@@ -129,7 +156,13 @@ contactsRouter.get("/", verifyAuth, async (c) => {
         imageUrl: usersTable.imageUrl,
       })
       .from(contactsTable)
-      .fullJoin(usersTable, eq(contactsTable.contactId, usersTable.id))
+      .innerJoin(
+        usersTable,
+        and(
+          eq(contactsTable.contactId, usersTable.id),
+          eq(contactsTable.confirmed, true)
+        )
+      )
       .where(eq(contactsTable.userId, userId));
 
     return c.json({ success: true, contacts });

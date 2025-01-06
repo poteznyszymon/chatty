@@ -49,7 +49,9 @@ const ChatInput = () => {
                 <EmojiPicker
                   theme={theme === "dark" ? Theme.DARK : Theme.LIGHT}
                   onEmojiClick={(emoji: EmojiClickData) => {
-                    setUserInput((prev) => prev + emoji.emoji);
+                    if (userInput.length < 200) {
+                      setUserInput((prev) => prev + emoji.emoji);
+                    }
                   }}
                 />
               </div>

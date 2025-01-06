@@ -15,6 +15,13 @@
       "when": 1735325219202,
       "tag": "0001_woozy_expediter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1736171127993,
+      "tag": "0002_hard_gorgon",
+      "breakpoints": true
     }
   ]
 }

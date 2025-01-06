@@ -161,7 +161,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
             />
             {isEditProfileOpen && (
               <button
-                className={`bg-primary p-3 rounded-full fixed right-20 lg:left-[22rem] lg:right-auto flex items-center justify-center duration-300 ${
+                className={`bg-primary p-3 rounded-full fixed right-5 lg:left-[22rem] lg:right-auto flex items-center justify-center duration-300 ${
                   showButton ? "bottom-5 " : "-bottom-20 "
                 }`}
               >

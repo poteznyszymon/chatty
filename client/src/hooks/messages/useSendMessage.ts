@@ -18,7 +18,6 @@ const useSendMessage = (
 
   const { mutate: sendMessage, isPending: isLoading } = useMutation({
     mutationFn: async () => {
-      console.log(content);
       const response = await fetch("/api/messages/send-message", {
         method: "POST",
         headers: {

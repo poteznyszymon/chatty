@@ -1,28 +1,28 @@
 import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetContacts = () => {
+const useGetInvitations = () => {
   const {
-    data: contacts,
+    data: invitations,
     isPending: isLoading,
     isError,
     refetch,
     isRefetching,
   } = useQuery<User[]>({
-    queryKey: ["contacts"],
+    queryKey: ["invitations"],
     queryFn: async () => {
       try {
-        const response = await fetch("/api/contacts/get-contacts");
+        const response = await fetch("/api/contacts/get-contacts-invitations");
         if (!response.ok) return null;
         const data = await response.json();
-        return data.contacts;
+        return data.contactsRequests;
       } catch (error) {
         console.log(error);
       }
     },
   });
 
-  return { contacts, isLoading, isError, refetch, isRefetching };
+  return { invitations, isLoading, isError, refetch, isRefetching };
 };
 
-export default useGetContacts;
+export default useGetInvitations;

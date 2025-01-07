@@ -187,7 +187,7 @@ contactsRouter.get("/get-contacts", verifyAuth, async (c) => {
   }
 });
 
-contactsRouter.get("/get-contacts-requests", verifyAuth, async (c) => {
+contactsRouter.get("/get-contacts-invitations", verifyAuth, async (c) => {
   try {
     const userId = c.get("userId" as any) as number;
 
@@ -200,7 +200,7 @@ contactsRouter.get("/get-contacts-requests", verifyAuth, async (c) => {
       return c.json({ success: false, message: "User not found" }, 404);
     }
 
-    const [contactsRequests] = await db
+    const contactsRequests = await db
       .select({
         id: usersTable.id,
         username: usersTable.username,
@@ -209,12 +209,54 @@ contactsRouter.get("/get-contacts-requests", verifyAuth, async (c) => {
         imageUrl: usersTable.imageUrl,
       })
       .from(contactsTable)
-      .innerJoin(usersTable, eq(contactsTable.confirmed, false))
-      .where(eq(contactsTable.userId, userId));
+      .innerJoin(usersTable, eq(usersTable.id, contactsTable.contactId))
+      .where(
+        and(
+          eq(contactsTable.userId, userId),
+          eq(contactsTable.confirmed, false)
+        )
+      );
 
-    return c.json({ success: true, requests: contactsRequests });
+    return c.json({ success: true, contactsRequests });
   } catch (error) {
     return c.json({ success: false, message: "Internal server error" }, 500);
+  }
+});
+
+contactsRouter.put("/verify-contact/:id", verifyAuth, async (c) => {
+  try {
+    const requestId = c.req.param("id");
+    const userId = c.get("userId" as any) as number;
+
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
+
+    if (!user) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
+    const [updatedContact] = await db
+      .update(contactsTable)
+      .set({ confirmed: true })
+      .where(eq(contactsTable.id, Number(requestId)))
+      .returning();
+
+    const [newContact] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, updatedContact.contactId));
+
+    await db.insert(contactsTable).values({
+      userId: newContact.id,
+      contactId: userId,
+      confirmed: true,
+    });
+
+    return c.json({ success: true, newContact: newContact });
+  } catch (error) {
+    c.json({ success: false, message: "Internal server error" });
   }
 });
 

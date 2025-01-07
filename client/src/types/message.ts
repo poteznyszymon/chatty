@@ -4,6 +4,5 @@ export interface Message {
   receiverId: number;
   content: string;
   sentAt: string;
-  confirmed: boolean;
   sending?: boolean;
 }

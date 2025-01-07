@@ -8,15 +8,17 @@ import { Link } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
 import CustomTooltip from "../shared/CustomTooltip";
+import useAddContact from "@/hooks/contacts/useAddContact";
 
 const SearchBar = () => {
   const queryClient = useQueryClient();
-
+  const { inviteContact } = useAddContact();
   const [showSearchAnswers, setShowSearchAnswers] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const { users, refetch, isError, isLoading, isRefetching } =
     useSearchUsers(inputValue);
   const contacts = queryClient.getQueryData<User[]>(["contacts"]);
+  const invitations = queryClient.getQueryData<User[]>(["invitations"]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -69,16 +71,22 @@ const SearchBar = () => {
                   <UserAvatar url={user.imageUrl || ""} className="size-8" />
                   {user.username}
 
-                  {contacts?.find((contact) => contact.id === user.id) ? (
+                  {contacts?.find((contact) => contact.id === user.id) ||
+                  invitations?.find((contact) => contact.id === user.id) ? (
                     <div className="ml-auto text-muted-foreground p-2 rounded-full">
                       <UserCheck className="size-5" />
                     </div>
                   ) : (
-                    <CustomTooltip classname="ml-auto" text="Add to contacts">
+                    <CustomTooltip
+                      classname="ml-auto"
+                      text="Invite to contacts"
+                    >
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
+                          inviteContact(user.id || Number.MAX_SAFE_INTEGER);
+                          setInputValue("");
                         }}
                         className="p-2 hover:bg-card rounded-full"
                       >

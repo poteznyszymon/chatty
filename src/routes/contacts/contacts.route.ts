@@ -187,7 +187,7 @@ contactsRouter.get("/get-contacts", verifyAuth, async (c) => {
   }
 });
 
-contactsRouter.get("/get-contacts-requests", verifyAuth, async (c) => {
+contactsRouter.get("/get-contacts-invitations", verifyAuth, async (c) => {
   try {
     const userId = c.get("userId" as any) as number;
 

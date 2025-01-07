@@ -18,11 +18,13 @@ import {
 } from "../ui/tooltip";
 import { useTheme } from "../ui/theme-provider";
 import { UseLayoutContext } from "@/context/LayoutContext";
+import useLogout from "@/hooks/auth/useLogout";
 
 const OptionsButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { setTheme, theme } = useTheme();
   const { setIsProfileSettingsOpen } = UseLayoutContext();
+  const { logoutUser, isLoading } = useLogout();
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -66,6 +68,9 @@ const OptionsButton = () => {
               </DropdownMenuSubContent>
               <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
                 Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="group" onClick={() => logoutUser()}>
+                <p className="text-red-500 group-hover:underline">Logout</p>
               </DropdownMenuItem>
             </DropdownMenuSub>
             <DropdownMenuSeparator />

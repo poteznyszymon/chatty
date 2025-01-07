@@ -86,7 +86,7 @@ contactsRouter.post("/add-contact", verifyAuth, async (c) => {
   }
 });
 
-contactsRouter.delete("/", verifyAuth, async (c) => {
+contactsRouter.delete("/delete-contact", verifyAuth, async (c) => {
   try {
     const data = await c.req.json();
     const userId = c.get("userId" as any) as number;
@@ -106,16 +106,22 @@ contactsRouter.delete("/", verifyAuth, async (c) => {
       return c.json({ success: false, message: "User not found" }, 404);
     }
 
-    await db.insert(contactsTable).values({
-      userId,
-      contactId,
-    });
+    await db
+      .delete(contactsTable)
+      .where(
+        and(
+          eq(contactsTable.userId, userId),
+          eq(contactsTable.contactId, contactId)
+        )
+      );
 
     await db
       .delete(contactsTable)
       .where(
-        eq(contactsTable.userId, userId) &&
-          eq(contactsTable.contactId, contactId)
+        and(
+          eq(contactsTable.userId, contactId),
+          eq(contactsTable.contactId, userId)
+        )
       );
 
     return c.json({
@@ -223,7 +229,7 @@ contactsRouter.get("/get-contacts-invitations", verifyAuth, async (c) => {
   }
 });
 
-contactsRouter.get("get-contacts-pending", verifyAuth, async (c) => {
+contactsRouter.get("/get-contacts-pending", verifyAuth, async (c) => {
   try {
     const userId = c.get("userId" as any) as number;
 
@@ -261,7 +267,7 @@ contactsRouter.get("get-contacts-pending", verifyAuth, async (c) => {
 
 contactsRouter.put("/verify-contact/:id", verifyAuth, async (c) => {
   try {
-    const requestId = c.req.param("id");
+    const contactUserId = c.req.param("id");
     const userId = c.get("userId" as any) as number;
 
     const [user] = await db
@@ -276,23 +282,84 @@ contactsRouter.put("/verify-contact/:id", verifyAuth, async (c) => {
     const [updatedContact] = await db
       .update(contactsTable)
       .set({ confirmed: true })
-      .where(eq(contactsTable.id, Number(requestId)))
+      .where(eq(contactsTable.userId, Number(contactUserId)))
       .returning();
+
+    if (!updatedContact) {
+      return c.json({ success: false, message: "Contact not found" }, 404);
+    }
 
     const [newContact] = await db
       .select()
       .from(usersTable)
-      .where(eq(usersTable.id, updatedContact.contactId));
+      .where(eq(usersTable.id, Number(contactUserId)));
+
+    if (!newContact) {
+      return c.json({ success: false, message: "New contact not found" }, 404);
+    }
 
     await db.insert(contactsTable).values({
-      userId: newContact.id,
-      contactId: userId,
+      userId: userId,
+      contactId: Number(contactUserId),
       confirmed: true,
     });
 
     return c.json({ success: true, newContact: newContact });
   } catch (error) {
+    console.error("Error in verify-contact:", error);
     c.json({ success: false, message: "Internal server error" });
+  }
+});
+
+contactsRouter.delete("/decline-contact/:id", verifyAuth, async (c) => {
+  try {
+    const userId = c.get("userId" as any) as number;
+    const contactUserId = c.req.param("id");
+
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
+
+    const [contactUser] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, Number(contactUserId)));
+
+    if (!user && !contactUser) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
+    const [contactInvitation] = await db
+      .select()
+      .from(contactsTable)
+      .where(
+        and(
+          eq(contactsTable.userId, Number(contactUserId)),
+          eq(contactsTable.contactId, userId)
+        )
+      );
+
+    if (!contactInvitation) {
+      return c.json({ success: false, message: "Invitation not found" }, 404);
+    }
+
+    await db
+      .delete(contactsTable)
+      .where(
+        and(
+          eq(contactsTable.userId, Number(contactUserId)),
+          eq(contactsTable.contactId, userId)
+        )
+      );
+
+    return c.json({
+      success: true,
+      user: contactUser,
+      message: "Invitation denyed successfully",
+    });
+  } catch (error) {
+    return c.json({ message: "Internal server error" }, 500);
   }
 });
 

@@ -223,6 +223,42 @@ contactsRouter.get("/get-contacts-invitations", verifyAuth, async (c) => {
   }
 });
 
+contactsRouter.get("get-contacts-pending", verifyAuth, async (c) => {
+  try {
+    const userId = c.get("userId" as any) as number;
+
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
+
+    if (!user) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
+    const contactsPending = await db
+      .select({
+        id: usersTable.id,
+        username: usersTable.username,
+        email: usersTable.email,
+        lastActive: usersTable.lastActive,
+        imageUrl: usersTable.imageUrl,
+      })
+      .from(contactsTable)
+      .innerJoin(usersTable, eq(usersTable.id, contactsTable.userId))
+      .where(
+        and(
+          eq(contactsTable.contactId, userId),
+          eq(contactsTable.confirmed, false)
+        )
+      );
+
+    return c.json({ success: true, contactsPending });
+  } catch (error) {
+    return c.json({ success: false, message: "Internal server error" });
+  }
+});
+
 contactsRouter.put("/verify-contact/:id", verifyAuth, async (c) => {
   try {
     const requestId = c.req.param("id");

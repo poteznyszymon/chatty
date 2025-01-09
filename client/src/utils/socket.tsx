@@ -1,9 +1,9 @@
 import { setActiveUsersGlobally } from "@/context/OnlineUsersContext";
-import { io, Socket,  } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 const BASE_URL = "http://localhost:4000";
 
-let socket: Socket | null = null;
+export let socket: Socket | null = null;
 
 export const ConnectSocket = (userId: string) => {
   if (!socket) {

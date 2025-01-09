@@ -14,7 +14,6 @@ io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId as string;
 
   if (userId) {
-    // Dodaj socket.id do zestawu dla userId
     if (!activeUsers.has(userId)) {
       activeUsers.set(userId, new Set());
     }
@@ -22,13 +21,11 @@ io.on("connection", (socket) => {
 
     console.log("User connected:", userId, "Socket ID:", socket.id);
 
-    // Emituj listę aktywnych użytkowników
     io.emit("getOnlineUsers", Array.from(activeUsers.keys()));
   }
 
   socket.on("disconnect", () => {
     if (userId) {
-      // Usuń socket.id z zestawu userId
       const userSockets = activeUsers.get(userId);
       if (userSockets) {
         userSockets.delete(socket.id);
@@ -39,7 +36,6 @@ io.on("connection", (socket) => {
 
       console.log("User disconnected:", userId, "Socket ID:", socket.id);
 
-      // Emituj zaktualizowaną listę aktywnych użytkowników
       io.emit("getOnlineUsers", Array.from(activeUsers.keys()));
     }
   });

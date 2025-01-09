@@ -7,6 +7,8 @@ import { users as usersTable } from "../../db/schema/user";
 import { messages as messageTable } from "../../db/schema/message";
 import { contacts as contactsTable } from "../../db/schema/contact";
 import { and, eq, or } from "drizzle-orm";
+import { io } from "../../websocket/socket";
+import type { Socket } from "socket.io";
 
 const messagesRouter = new Hono();
 
@@ -26,15 +28,15 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
       .from(usersTable)
       .where(eq(usersTable.username, messageData.username));
 
-    if (userId === receiver.id) {
+    if (!user || !receiver) {
+      return c.json({ success: false, message: "User not found" }, 404);
+    }
+
+    if (Number(userId) === receiver.id) {
       return c.json(
         { success: false, message: "You cannot send message to yourself" },
         401
       );
-    }
-
-    if (!user || !receiver) {
-      return c.json({ success: false, message: "User not found" }, 404);
     }
 
     const [inContacts] = await db
@@ -49,8 +51,6 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
       );
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
     const [newMessage] = await db
       .insert(messageTable)
       .values({
@@ -59,6 +59,11 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
         content: messageData.content,
       })
       .returning();
+
+    io.emit(`${receiver.username}`, {
+      senderUsername: user.username,
+      message: newMessage,
+    });
 
     return c.json({
       success: true,
@@ -78,7 +83,7 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
         500
       );
     }
-    return c.json({ success: false, message: "Internal server error" });
+    return c.json({ success: false, message: "Internal server error" }, 500);
   }
 });
 

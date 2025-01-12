@@ -13,8 +13,10 @@ interface MessageProps {
 const MessageComponent = ({ message, myMessage, sending }: MessageProps) => {
   return (
     <div
-      className={`p-3 flex flex-col rounded-md  ${
-        myMessage ? "ml-auto sm:mr-[3.9rem] bg-primary" : "bg-card mr-auto"
+      className={`p-3 flex flex-col rounded-md border ${
+        myMessage
+          ? "ml-auto sm:mr-[3.9rem] bg-primary text-white"
+          : "bg-card mr-auto"
       } `}
     >
       <p>{message.content}</p>

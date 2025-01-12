@@ -8,7 +8,7 @@ const AuthenticatedRoutes = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-backgroundImage bg-primary/30 flex flex-col items-center justify-center">
+      <div className="min-h-screen flex flex-col items-center justify-center">
         <Loader2 className="text-foreground animate-spin size-7" />
       </div>
     );

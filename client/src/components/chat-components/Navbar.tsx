@@ -14,7 +14,7 @@ const Navbar = ({ username }: { username: string }) => {
   return (
     <nav
       onClick={() => setIsUserInfoOpen(true)}
-      className="bg-card w-full fixed h-[4rem] flex items-center px-2 md:px-5 gap-2 cursor-pointer"
+      className="bg-card w-full fixed h-[4rem] flex items-center px-2 md:px-5 gap-2 cursor-pointer border-b"
     >
       <Link
         to="/"

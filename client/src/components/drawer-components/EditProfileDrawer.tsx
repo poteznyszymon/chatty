@@ -99,7 +99,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
           <div className="overflow-hidden rounded-full relative group cursor-pointer">
             <UserAvatar
               url={image ? image : user?.imageUrl ? user.imageUrl : ""}
-              className="size-[9rem] "
+              className="size-[9rem]"
             />
             <input
               onChange={(e) => handleImageChange(e)}
@@ -108,7 +108,9 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
               id="image-input"
             />
             <div className="absolute bg-card/50 size-full flex items-center justify-center rounded-full p-2  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <ImagePlus className="size-10 group-hover:size-14 duration-300" />
+              <div className="p-3 bg-primary rounded-full">
+                <ImagePlus className="size-10 group-hover:size-14 duration-300 text-white" />
+              </div>
             </div>
           </div>
         </label>
@@ -166,9 +168,9 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
                 }`}
               >
                 {!isLoading ? (
-                  <Check className="size-6" />
+                  <Check className="size-6 text-white" />
                 ) : (
-                  <Loader2 className="size-6 animate-spin" />
+                  <Loader2 className="size-6 animate-spin text-white" />
                 )}
               </button>
             )}

@@ -1,4 +1,4 @@
-import { Loader2, SendHorizonal, Smile, X } from "lucide-react";
+import { ArrowDown, Loader2, SendHorizonal, Smile, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { AutosizeTextarea } from "../ui/textarea";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
@@ -7,16 +7,27 @@ import useSendMessage from "@/hooks/messages/useSendMessage";
 import { useLocation } from "react-router";
 import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
+import { scrollToBottom } from "@/utils/scrollToBottom";
+import useMaxScroll from "@/hooks/utils/useMaxScroll";
+import useScrollPosition from "@/hooks/utils/useScrollPosition";
 
 const ChatInput = () => {
+  const { maxScroll } = useMaxScroll();
+  const { scrollPosition } = useScrollPosition();
   const { pathname } = useLocation();
   const [openEmojiPanel, setOpenEmojiPanel] = useState(false);
   const [userInput, setUserInput] = useState("");
   const { theme } = useTheme();
+  const showScrollButton = scrollPosition < maxScroll - 400;
   const { sendMessage, isLoading } = useSendMessage(
     pathname.slice(1),
     userInput,
-    { onSucess: () => setUserInput("") }
+    {
+      onSucess: () => {
+        setUserInput("");
+        scrollToBottom();
+      },
+    }
   );
   const { isLoading: isUserLoading } = useQuery<User | null>({
     queryKey: ["user", `${pathname.slice(1)}`],
@@ -36,7 +47,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="max-w-2xl sticky bottom-0 bg-background z-20 w-full pb-5 pt-2 items-center flex px-2 xl:px-0 gap-3">
+    <div className="max-w-2xl sticky bottom-0 bg-background z-20 w-full lg:pb-5 pb-2 pt-2 items-center flex px-2 xl:px-0 gap-3">
       <div className="flex flex-col w-full rounded-md bg-card relative border">
         <div className="min-h-[3rem] flex items-center w-full px-3">
           <div
@@ -90,6 +101,14 @@ const ChatInput = () => {
             <Loader2 className="size-5 animate-spin text-white" />
           )}
         </button>
+      </div>
+      <div
+        onClick={scrollToBottom}
+        className={`absolute transition-all hidden lg:flex duration-300  cursor-pointer bg-primary right-0 bottom-28  items-center justify-center rounded-full ${
+          showScrollButton ? "size-[3rem]" : "size-0"
+        } `}
+      >
+        <ArrowDown className="size-7" />
       </div>
     </div>
   );

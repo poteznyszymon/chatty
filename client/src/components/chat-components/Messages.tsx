@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { socket } from "@/utils/socket";
 import { Message } from "@/types/message";
 import { useEffect } from "react";
+import { scrollToBottom } from "@/utils/scrollToBottom";
 
 const Messages = () => {
   const { username } = useParams();
@@ -16,7 +17,7 @@ const Messages = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const listener = ({
+    const listener = async ({
       senderUsername,
       message,
     }: {
@@ -30,8 +31,11 @@ const Messages = () => {
             return oldData ? [...oldData, message] : [message];
           }
         );
+        scrollToBottom();
       }
     };
+
+    scrollToBottom();
 
     socket?.on(`${user?.username}`, listener);
 
@@ -41,7 +45,7 @@ const Messages = () => {
   }, [pathname, user?.username, queryClient]);
 
   return (
-    <div className="flex max-w-2xl h-full w-full items-end flex-col justify-end gap-2 px-2 xl:px-0  mt-[4rem]">
+    <div className="flex max-w-2xl h-full w-full items-end flex-col justify-end gap-2 px-2 xl:px-0 mt-[4.5rem] ">
       {isLoading && <Loader2 className="size-6 animate-spin m-auto" />}
       {messages?.map((message) => (
         <MessageComponent

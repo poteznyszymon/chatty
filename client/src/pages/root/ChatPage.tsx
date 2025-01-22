@@ -2,10 +2,16 @@ import ChatInput from "@/components/chat-components/ChatInput";
 import InfoBar from "@/components/chat-components/InfoBar";
 import Messages from "@/components/chat-components/Messages";
 import Navbar from "@/components/chat-components/Navbar";
+import { scrollToBottom } from "@/utils/scrollToBottom";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 
 const ChatPage = () => {
   const { username } = useParams();
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [username]);
 
   return (
     <main className="flex flex-1">

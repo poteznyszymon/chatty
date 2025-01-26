@@ -8,14 +8,12 @@ const ChatPage = () => {
   const { username } = useParams();
 
   return (
-    <main className="flex flex-1">
-      <div className="flex-1 flex flex-col duration-300 transition-all">
-        <Navbar username={username || ""} />
-        <div className="flex flex-col flex-1 items-center justify-center ">
-          <Messages />
-          <ChatInput />
-        </div>
+    <main className="flex flex-col flex-1">
+      <Navbar username={username || ""} />
+      <div className="max-h-[calc(100vh-9rem)] h-full">
+        <Messages />
       </div>
+      <ChatInput />
       <InfoBar />
     </main>
   );

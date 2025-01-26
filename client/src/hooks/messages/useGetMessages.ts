@@ -10,6 +10,7 @@ const useGetMessages = (username: string) => {
     refetch,
   } = useQuery<Message[]>({
     queryKey: ["messages", `${username}`],
+    refetchInterval: 1000 * 60,
     queryFn: async () => {
       const response = await fetch(`/api/messages/get-messages/${username}`);
       if (!response.ok) {

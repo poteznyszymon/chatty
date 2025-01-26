@@ -13,10 +13,15 @@ const ChatInput = () => {
   const [openEmojiPanel, setOpenEmojiPanel] = useState(false);
   const [userInput, setUserInput] = useState("");
   const { theme } = useTheme();
+
   const { sendMessage, isLoading } = useSendMessage(
     pathname.slice(1),
     userInput,
-    { onSucess: () => setUserInput("") }
+    {
+      onSucess: () => {
+        setUserInput("");
+      },
+    }
   );
   const { isLoading: isUserLoading } = useQuery<User | null>({
     queryKey: ["user", `${pathname.slice(1)}`],
@@ -36,7 +41,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="max-w-2xl sticky bottom-0 bg-background z-20 w-full pb-5 pt-2 items-center flex px-2 xl:px-0 gap-3">
+    <div className="max-w-2xl mt-auto mx-auto bg-background z-20 w-full lg:pb-5 pb-2 pt-2 items-center flex px-2 xl:px-0 gap-3">
       <div className="flex flex-col w-full rounded-md bg-card relative border">
         <div className="min-h-[3rem] flex items-center w-full px-3">
           <div

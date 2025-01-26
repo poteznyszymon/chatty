@@ -1,6 +1,9 @@
-export const scrollToBottom = () => {
-  window.scrollTo({
-    top: document.body.scrollHeight,
-    behavior: "smooth",
-  });
+export const scrollToBottom = (divRef: React.RefObject<HTMLDivElement>) => {
+  const div = divRef.current;
+  if (div) {
+    div.scrollTo({
+      top: div.scrollHeight,
+      behavior: "smooth",
+    });
+  }
 };

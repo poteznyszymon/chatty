@@ -1,26 +1,37 @@
 import { useState, useEffect } from "react";
 
-const useMaxScroll = () => {
+const useMaxScroll = (id: string) => {
   const [maxScroll, setMaxScroll] = useState(0);
 
   const calculateMaxScroll = () => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = window.innerHeight;
-    setMaxScroll(scrollHeight - clientHeight);
+    const container = document.getElementById(id);
+    if (container) {
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+      setMaxScroll(scrollHeight - clientHeight);
+    }
   };
 
   useEffect(() => {
-    // Oblicz maksymalny scroll przy montowaniu
+    const container = document.getElementById(id);
+
+    if (!container) {
+      console.warn(`Element with id "${id}" not found.`);
+      return;
+    }
+
     calculateMaxScroll();
 
-    // Aktualizuj przy zmianie rozmiaru okna
+    const observer = new MutationObserver(calculateMaxScroll);
+    observer.observe(container, { childList: true, subtree: true });
+
     window.addEventListener("resize", calculateMaxScroll);
 
-    // Czyszczenie zdarzenia
     return () => {
+      observer.disconnect();
       window.removeEventListener("resize", calculateMaxScroll);
     };
-  }, []);
+  }, [id]);
 
   return { maxScroll };
 };

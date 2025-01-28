@@ -52,7 +52,7 @@ const Messages = () => {
   return (
     <div
       id="messages-container"
-      className="flex flex-col flex-1 max-h-full mx-auto max-w-[43rem] overflow-y-scroll px-2 gap-1"
+      className="flex flex-col flex-1 max-h-full h-full mx-auto max-w-[43rem] overflow-y-scroll px-2 gap-1"
       ref={messageEndRef}
     >
       {isLoading && <Loader2 className="size-6 animate-spin m-auto" />}

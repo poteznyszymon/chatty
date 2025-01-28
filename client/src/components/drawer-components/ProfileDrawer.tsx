@@ -31,7 +31,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
           <CustomTooltip text="Back">
             <div
               onClick={() => setIsProfileSettingsOpen(false)}
-              className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
+              className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-accent cursor-pointer"
             >
               <ArrowLeft className="size-6" />
             </div>
@@ -40,7 +40,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
           <CustomTooltip text="Edit">
             <div
               onClick={() => setIsEditProfileOpen(true)}
-              className="p-2 ml-auto rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
+              className="p-2 ml-auto rounded-full text-muted-foreground flex items-center justify-center hover:bg-accent cursor-pointer"
             >
               <UserPen className="size-6" />
             </div>

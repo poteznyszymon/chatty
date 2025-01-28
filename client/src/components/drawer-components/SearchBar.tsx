@@ -4,7 +4,6 @@ import OptionsButton from "./OptionsButton";
 import { useState, ChangeEvent } from "react";
 import useSearchUsers from "@/hooks/users/useSearchUsers";
 import UserAvatar from "../shared/UserAvatar";
-import { Link } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
 import CustomTooltip from "../shared/CustomTooltip";
@@ -59,12 +58,11 @@ const SearchBar = () => {
             {!isLoading &&
               !isRefetching &&
               users?.map((user) => (
-                <Link
+                <div
                   onClick={() => {
                     setShowSearchAnswers(false);
                     setInputValue("");
                   }}
-                  to={`/${user.username}`}
                   key={user.id}
                   className="p-2 flex items-center gap-2 hover:bg-accent rounded-md"
                 >
@@ -94,7 +92,7 @@ const SearchBar = () => {
                       </div>
                     </CustomTooltip>
                   )}
-                </Link>
+                </div>
               ))}
             {(!users || isError) && !isLoading && !isRefetching && (
               <p className="p-2">No users found</p>

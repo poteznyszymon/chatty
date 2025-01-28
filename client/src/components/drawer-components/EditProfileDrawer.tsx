@@ -85,7 +85,7 @@ const EditProfileDrawer = ({ className }: EditProfileDrawerProps) => {
                 setIsEditProfileOpen(false);
                 setImage(null);
               }}
-              className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-secondary cursor-pointer"
+              className="p-2 rounded-full text-muted-foreground flex items-center justify-center hover:bg-accent cursor-pointer"
             >
               <ArrowLeft />
             </div>

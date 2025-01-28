@@ -91,7 +91,6 @@ const useSendMessage = (
             : [newMessage];
         }
       );
-      console.log(newMessage);
     },
   });
 

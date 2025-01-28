@@ -24,7 +24,7 @@ const OptionsButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { setTheme, theme } = useTheme();
   const { setIsProfileSettingsOpen } = UseLayoutContext();
-  const { logoutUser, isLoading } = useLogout();
+  const { logoutUser } = useLogout();
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -36,7 +36,7 @@ const OptionsButton = () => {
         <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
           <TooltipTrigger>
             <DropdownMenuTrigger asChild>
-              <div className="hover:bg-secondary p-2 rounded-full text-muted-foreground cursor-pointer">
+              <div className="hover:bg-accent p-2 rounded-full text-muted-foreground cursor-pointer">
                 <Menu />
               </div>
             </DropdownMenuTrigger>

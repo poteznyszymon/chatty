@@ -52,7 +52,7 @@ const Messages = () => {
   return (
     <div
       id="messages-container"
-      className="flex flex-col flex-1 max-h-full h-full mx-auto max-w-[43rem] overflow-y-scroll px-2 gap-1"
+      className="flex flex-col flex-1 max-h-[calc(100vh-9rem)] h-full mx-auto max-w-[43rem] overflow-y-scroll px-2 gap-1 pt-3"
       ref={messageEndRef}
     >
       {isLoading && <Loader2 className="size-6 animate-spin m-auto" />}
@@ -67,10 +67,10 @@ const Messages = () => {
       <div
         onClick={() => scrollToBottom(messageEndRef)}
         className={`absolute transition-all hover:scale-110 flex duration-300  cursor-pointer bg-primary top-[5rem] left-1/2 lg:left-[80rem] -translate-x-1/2  items-center justify-center rounded-full ${
-          showScrollButton ? "size-[3rem]" : "size-0"
+          showScrollButton ? "size-[2rem]" : "size-0"
         } `}
       >
-        <ArrowDown className="size-7 text-white" />
+        <ArrowDown className="size-6 text-white" />
       </div>
     </div>
   );

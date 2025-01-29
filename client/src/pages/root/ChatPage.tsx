@@ -4,6 +4,7 @@ import Messages from "@/components/chat-components/Messages";
 import Navbar from "@/components/chat-components/Navbar";
 import useGetContacts from "@/hooks/contacts/useGetContacts";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 
 const ChatPage = () => {
@@ -13,6 +14,12 @@ const ChatPage = () => {
   const userInContacts = contacts?.some(
     (contact) => contact.username === username
   );
+
+  useEffect(() => {
+    if (username) {
+      document.title = `Chat with ${username}`;
+    }
+  }, [username]);
 
   return (
     <main className="flex flex-col flex-1 max-h-screen h-screen">

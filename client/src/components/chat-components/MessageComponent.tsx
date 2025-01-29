@@ -22,7 +22,9 @@ const MessageComponent = ({ message, myMessage, sending }: MessageProps) => {
     >
       <p>{message.content}</p>
       {message.image && (
-        <img src={message.image} className="max-h-[13rem] py-3"></img>
+        <div className="rounded-md overflow-hidden max-h-[10rem] w-[14rem] h-[13rem] my-3">
+          <img src={message.image} className="w-full h-full"></img>
+        </div>
       )}
       <div className="flex items-center gap-1">
         <p className={`text-xs  ${myMessage ? " " : "text-muted-foreground"}`}>

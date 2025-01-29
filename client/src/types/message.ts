@@ -3,6 +3,7 @@ export interface Message {
   senderId: number;
   receiverId: number;
   content: string;
+  image: string | null;
   sentAt: string;
   sending?: boolean;
 }

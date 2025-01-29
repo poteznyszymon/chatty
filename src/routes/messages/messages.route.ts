@@ -8,7 +8,7 @@ import { messages as messageTable } from "../../db/schema/message";
 import { contacts as contactsTable } from "../../db/schema/contact";
 import { and, eq, or } from "drizzle-orm";
 import { io } from "../../websocket/socket";
-import type { Socket } from "socket.io";
+import { v2 } from "cloudinary";
 
 const messagesRouter = new Hono();
 
@@ -51,12 +51,18 @@ messagesRouter.post("/send-message", verifyAuth, async (c) => {
       );
     }
 
+    if (messageData.image) {
+      const { secure_url } = await v2.uploader.upload(messageData.image);
+      messageData.image = secure_url;
+    }
+
     const [newMessage] = await db
       .insert(messageTable)
       .values({
         senderId: userId,
         receiverId: receiver.id,
-        content: messageData.content,
+        content: messageData.content ? messageData.content : "",
+        image: messageData.image ? messageData.image : "",
       })
       .returning();
 

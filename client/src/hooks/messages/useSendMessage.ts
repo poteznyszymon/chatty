@@ -10,7 +10,8 @@ interface useSendMessageOptions {
 const useSendMessage = (
   username: string,
   content: string,
-  options: useSendMessageOptions
+  options: useSendMessageOptions,
+  image?: string
 ) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -23,7 +24,7 @@ const useSendMessage = (
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, content }),
+        body: JSON.stringify({ username, content, image }),
       });
 
       const data = await response.json();
@@ -50,6 +51,7 @@ const useSendMessage = (
         senderId: user?.id || 0,
         receiverId: Math.random(),
         sentAt: new Date().toISOString(),
+        image: image ? image : null,
         sending: true,
       };
 

@@ -57,7 +57,9 @@ export const createMessageSchema = z.object({
   content: z
     .string()
     .min(1, { message: "Message cannot be empty" })
-    .max(200, { message: "Message must be shorter than 200 characters" }),
+    .max(200, { message: "Message must be shorter than 200 characters" })
+    .optional(),
+  image: z.string().optional().nullable(),
 });
 
 export type createMessageValues = z.infer<typeof createMessageSchema>;

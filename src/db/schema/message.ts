@@ -10,5 +10,6 @@ export const messages = pgTable("messages", {
     .references(() => usersTable.id)
     .notNull(),
   content: text("content").notNull(),
+  image: text("image"),
   sentAt: timestamp("sent_at", { mode: "date" }).defaultNow().notNull(),
 });

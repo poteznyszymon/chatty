@@ -20,6 +20,10 @@ const ChatInput = () => {
   const [openEmojiPanel, setOpenEmojiPanel] = useState(false);
   const [userInput, setUserInput] = useState("");
   const { theme } = useTheme();
+  const [image, setImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [fileType, setFileType] = useState<string | null>(null);
+  const [fileSize, setFileSize] = useState<number | null>(null);
 
   const { sendMessage, isLoading } = useSendMessage(
     pathname.slice(1),
@@ -27,8 +31,10 @@ const ChatInput = () => {
     {
       onSucess: () => {
         setUserInput("");
+        setImage(null);
       },
-    }
+    },
+    image ? image : ""
   );
   const { isLoading: isUserLoading } = useQuery<User | null>({
     queryKey: ["user", `${pathname.slice(1)}`],
@@ -44,6 +50,22 @@ const ChatInput = () => {
   const handleSendMessage = () => {
     if (userInput.trim() && !isLoading) {
       sendMessage();
+    }
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      setFileType(file.type);
+      setFileSize(file.size);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -94,7 +116,12 @@ const ChatInput = () => {
           >
             <Paperclip className="size-5 text-muted-foreground group-hover:text-primary" />
           </label>
-          <input type="file" hidden id="input-file" />
+          <input
+            type="file"
+            hidden
+            id="input-file"
+            onChange={handleImageChange}
+          />
         </div>
         {userInput.length > 160 && (
           <div className="absolute right-2 -bottom-3 text-xs text-muted-foreground bg-accent p-1 rounded-md">
@@ -102,23 +129,31 @@ const ChatInput = () => {
           </div>
         )}
 
-        <div className="border bg-card absolute px-3 py-2 -top-[3.8rem] flex rounded-md items-center gap-3 w-[12rem] group hover:ring-1 ring-primary">
-          <div>
-            <Image className="text-primary" />
+        {image && (
+          <div className="border bg-card absolute px-3 py-2 -top-[3.8rem] flex rounded-md items-center gap-3 w-[12rem] group hover:ring-1 ring-primary">
+            <div>
+              <Image className="text-primary" />
+            </div>
+            <div className="flex flex-col text-sm">
+              <p className="max-w-[6rem] truncate">{fileName}</p>
+              <p className="text-muted-foreground text-xs">
+                {fileType?.split("/")[1].toUpperCase()}{" "}
+                {Math.round(fileSize! / 1024)}KB
+              </p>
+            </div>
+            <div
+              onClick={() => setImage(null)}
+              className="absolute top-1 text-muted-foreground right-1 hidden group-hover:block hover:bg-accent rounded-full p-1 cursor-pointer"
+            >
+              <X />
+            </div>
           </div>
-          <div className="flex flex-col text-sm">
-            <p className="max-w-[6rem] truncate">testfile.png</p>
-            <p className="text-muted-foreground text-xs">PNG 32KB</p>
-          </div>
-          <div className="absolute top-1 text-muted-foreground right-1 hidden group-hover:block hover:bg-accent rounded-full p-1 cursor-pointer">
-            <X />
-          </div>
-        </div>
+        )}
       </div>
       <div className="bg-background rounded-full border">
         <button
           onClick={handleSendMessage}
-          disabled={!userInput || isLoading}
+          disabled={(!userInput && !image) || isLoading}
           className="size-[3rem] aspect-square bg-primary disabled:bg-primary/70 rounded-full flex items-center justify-center"
         >
           {!isLoading && !isUserLoading ? (

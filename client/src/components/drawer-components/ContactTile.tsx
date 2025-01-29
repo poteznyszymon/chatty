@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import useAcceptContact from "@/hooks/contacts/useAcceptContact";
 import useDeleteContact from "@/hooks/contacts/useDeleteContact";
 import useDeclineInvitation from "@/hooks/contacts/useDeclineInvitation";
-import { scrollToBottom } from "@/utils/scrollToBottom";
 
 interface ContactTileProps {
   contact: {
@@ -86,11 +85,10 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
             <Link
               onClick={() => {
                 setIsUserInfoOpen(false);
-                scrollToBottom();
               }}
               to={`${contact.username}`}
-              className={`flex px-2 items-center gap-3 hover:bg-accent rounded-md p-1 group ${
-                pathname.slice(1) === contact.username ? "bg-accent" : ""
+              className={`flex px-2 items-center gap-3 hover:bg-primary rounded-md p-1 group ${
+                pathname.slice(1) === contact.username ? "bg-primary" : ""
               }`}
             >
               <UserAvatar
@@ -100,7 +98,7 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
               />
               <div>
                 <p>{contact.username}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm">
                   {activeUsers.includes(contact.id.toString())
                     ? "online"
                     : "offline"}

@@ -14,6 +14,7 @@ import { useLocation } from "react-router";
 import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "../ui/input";
+import DragDrop from "../shared/DragDrop";
 
 const ChatInput = () => {
   const { pathname } = useLocation();
@@ -74,7 +75,13 @@ const ChatInput = () => {
       id="chat-input-container"
       className="max-w-2xl mt-auto  mx-auto bg-background z-20 w-full lg:pb-5 pb-2 pt-2 items-center flex px-2 xl:px-0 gap-3"
     >
-      <div className="flex flex-col w-full rounded-md bg-card relative border">
+      <DragDrop
+        setImage={setImage}
+        setFileName={setFileName}
+        setFileSize={setFileSize}
+        setFileType={setFileType}
+        className="flex flex-col w-full rounded-md bg-card relative "
+      >
         <div className="min-h-[3rem] flex items-center w-full px-3">
           <div
             onClick={() => setOpenEmojiPanel(!openEmojiPanel)}
@@ -110,6 +117,7 @@ const ChatInput = () => {
               <X className="size-6 text-muted-foreground" />
             </div>
           )}
+
           <label
             htmlFor="input-file"
             className="p-2 hover:bg-accent rounded-full cursor-pointer group"
@@ -150,7 +158,7 @@ const ChatInput = () => {
             </div>
           </div>
         )}
-      </div>
+      </DragDrop>
       <div className="bg-background rounded-full border">
         <button
           onClick={handleSendMessage}

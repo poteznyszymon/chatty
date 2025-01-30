@@ -87,8 +87,10 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
                 setIsUserInfoOpen(false);
               }}
               to={`${contact.username}`}
-              className={`flex px-2 items-center gap-3 hover:bg-primary rounded-md p-1 group ${
-                pathname.slice(1) === contact.username ? "bg-primary" : ""
+              className={`flex px-2 items-center gap-3 hover:text-white hover:bg-primary rounded-md p-1 group ${
+                pathname.slice(1) === contact.username
+                  ? "bg-primary text-white"
+                  : ""
               }`}
             >
               <UserAvatar
@@ -98,11 +100,15 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
               />
               <div>
                 <p>{contact.username}</p>
-                <p className="text-sm">
+                <div
+                  className={`text-sm text-muted-foreground group-hover:text-white ${
+                    pathname.slice(1) === contact.username ? "text-white" : ""
+                  }`}
+                >
                   {activeUsers.includes(contact.id.toString())
                     ? "online"
                     : "offline"}
-                </p>
+                </div>
               </div>
             </Link>
           </ContextMenuTrigger>

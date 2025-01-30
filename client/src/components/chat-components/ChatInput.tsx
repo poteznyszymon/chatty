@@ -120,6 +120,7 @@ const ChatInput = () => {
             type="file"
             hidden
             id="input-file"
+            accept="image/png, image/jpeg, image/jpg"
             onChange={handleImageChange}
           />
         </div>
@@ -130,7 +131,7 @@ const ChatInput = () => {
         )}
 
         {image && (
-          <div className="border bg-card absolute px-3 py-2 -top-[3.8rem] flex rounded-md items-center gap-3 w-[12rem] group hover:ring-1 ring-primary">
+          <div className="border shadow-sm bg-card absolute px-3 py-2 -top-[3.8rem] flex rounded-md items-center gap-3 w-[12rem] group hover:ring-1 ring-primary">
             <div>
               <Image className="text-primary" />
             </div>

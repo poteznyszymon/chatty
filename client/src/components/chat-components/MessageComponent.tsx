@@ -47,6 +47,7 @@ const MessageComponent = ({ message, myMessage, sending }: MessageProps) => {
         imageUrl={message.image ?? ""}
         showImageInfo={showImageInfo}
         setShowImageInfo={setShowImageInfo}
+        showDonwload
       />
     </div>
   );

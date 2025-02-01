@@ -5,12 +5,14 @@ interface ImageInfoProps {
   imageUrl: string;
   showImageInfo: boolean;
   setShowImageInfo: React.Dispatch<React.SetStateAction<boolean>>;
+  showDonwload: boolean;
 }
 
 const ImageInfo = ({
   imageUrl,
   showImageInfo,
   setShowImageInfo,
+  showDonwload,
 }: ImageInfoProps) => {
   const [enlargeImage, setEnlargeImage] = useState(false);
 
@@ -21,13 +23,15 @@ const ImageInfo = ({
       }`}
     >
       <nav className=" flex items-center justify-end p-2 gap-3">
-        <a
-          target="_blank"
-          href={imageUrl}
-          className="p-2 hover:bg-accent rounded-full cursor-pointer text-muted-foreground hover:text-foreground"
-        >
-          <Download />
-        </a>
+        {showDonwload && (
+          <a
+            target="_blank"
+            href={imageUrl}
+            className="p-2 hover:bg-accent rounded-full cursor-pointer text-muted-foreground hover:text-foreground"
+          >
+            <Download />
+          </a>
+        )}
         <div
           onClick={() => setEnlargeImage(!enlargeImage)}
           className="p-2 hover:bg-accent rounded-full cursor-pointer text-muted-foreground hover:text-foreground"
@@ -54,7 +58,10 @@ const ImageInfo = ({
             enlargeImage && "scale-150"
           }`}
         >
-          <img src={imageUrl} />
+          <img
+            style={{ userSelect: "none", pointerEvents: "none" }}
+            src={imageUrl}
+          />
         </div>
       </div>
     </div>

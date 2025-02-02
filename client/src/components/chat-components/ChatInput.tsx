@@ -15,6 +15,8 @@ import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "../ui/input";
 import DragDrop from "../shared/DragDrop";
+import ImageInfo from "../shared/ImageInfo";
+import useOnKeyPress from "@/hooks/utils/useOnKeyPress";
 
 const ChatInput = () => {
   const { pathname } = useLocation();
@@ -25,6 +27,7 @@ const ChatInput = () => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileType, setFileType] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<number | null>(null);
+  const [showImageInfo, setShowImageInfo] = useState(false);
 
   const { sendMessage, isLoading } = useSendMessage(
     pathname.slice(1),
@@ -49,10 +52,12 @@ const ChatInput = () => {
   };
 
   const handleSendMessage = () => {
-    if (userInput.trim() && !isLoading) {
+    if ((userInput.trim() || image) && !isLoading) {
       sendMessage();
     }
   };
+
+  useOnKeyPress({ targetKey: "Enter", callback: handleSendMessage });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -139,7 +144,10 @@ const ChatInput = () => {
         )}
 
         {image && (
-          <div className="border shadow-sm bg-card absolute px-3 py-2 -top-[3.8rem] flex rounded-md items-center gap-3 w-[12rem] group hover:ring-1 ring-primary">
+          <div
+            onClick={() => setShowImageInfo(true)}
+            className="border cursor-pointer shadow-sm bg-card absolute px-3 py-2 -top-[3.8rem] flex rounded-md items-center gap-3 w-[12rem] group hover:ring-1 ring-primary"
+          >
             <div>
               <Image className="text-primary" />
             </div>
@@ -151,7 +159,10 @@ const ChatInput = () => {
               </p>
             </div>
             <div
-              onClick={() => setImage(null)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setImage(null);
+              }}
               className="absolute top-1 text-muted-foreground right-1 hidden group-hover:block hover:bg-accent rounded-full p-1 cursor-pointer"
             >
               <X />
@@ -172,6 +183,12 @@ const ChatInput = () => {
           )}
         </button>
       </div>
+      <ImageInfo
+        imageUrl={image ?? ""}
+        showImageInfo={showImageInfo}
+        setShowImageInfo={setShowImageInfo}
+        showDonwload={false}
+      />
     </div>
   );
 };

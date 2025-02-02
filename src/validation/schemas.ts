@@ -56,7 +56,6 @@ export const createMessageSchema = z.object({
   username: z.string(),
   content: z
     .string()
-    .min(1, { message: "Message cannot be empty" })
     .max(200, { message: "Message must be shorter than 200 characters" })
     .optional(),
   image: z.string().optional().nullable(),

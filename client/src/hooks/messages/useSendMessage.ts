@@ -60,7 +60,7 @@ const useSendMessage = (
       queryClient.setQueryData<Message[]>(
         ["messages", `${username}`],
         (oldData) => {
-          return oldData ? [...oldData, tempMessage] : [tempMessage];
+          return oldData ? [tempMessage, ...oldData] : [tempMessage];
         }
       );
 
@@ -89,7 +89,7 @@ const useSendMessage = (
         ["messages", `${username}`],
         (oldData) => {
           return oldData
-            ? [...oldData.filter((msg) => !msg.sending), newMessage]
+            ? [newMessage, ...oldData.filter((msg) => !msg.sending)]
             : [newMessage];
         }
       );

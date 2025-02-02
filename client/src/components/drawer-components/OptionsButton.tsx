@@ -9,7 +9,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
-import { Menu } from "lucide-react";
+import { Clock, LogOut, Mail, Menu, Palette, User } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -44,6 +44,7 @@ const OptionsButton = () => {
           <DropdownMenuContent>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
+                <Palette />
                 <span>Theme</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -67,15 +68,19 @@ const OptionsButton = () => {
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
               <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+                <User />
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+                <Mail />
                 Invitations
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+                <Clock />
                 Pending
               </DropdownMenuItem>
-              <DropdownMenuItem className="group" onClick={() => logoutUser()}>
+              <DropdownMenuItem className="group "  onClick={() => logoutUser()}>
+                <LogOut className="text-red-500 group-hover:underline"/>
                 <p className="text-red-500 group-hover:underline">Logout</p>
               </DropdownMenuItem>
             </DropdownMenuSub>

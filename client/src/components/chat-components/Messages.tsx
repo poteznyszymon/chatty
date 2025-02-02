@@ -20,7 +20,9 @@ const Messages = () => {
   const messageEndRef = useRef<HTMLDivElement>(null);
   const { maxScroll } = useMaxScroll("messages-container");
   const { scrollPosition } = useScrollPosition("messages-container");
-  const showScrollButton = scrollPosition < maxScroll - 400 && maxScroll > 0;
+  const showScrollButton = scrollPosition + maxScroll < 800 && maxScroll > 800;
+
+  console.log(scrollPosition, maxScroll);
 
   useEffect(() => {
     const listener = async ({
@@ -45,14 +47,10 @@ const Messages = () => {
     };
   }, [pathname, user?.username, queryClient]);
 
-  useEffect(() => {
-    scrollToBottom(messageEndRef);
-  }, [username, messages]);
-
   return (
     <div
       id="messages-container"
-      className="flex flex-col flex-1 max-h-[calc(100vh-9rem)] h-full mx-auto max-w-[43rem] overflow-y-scroll px-2 gap-1 pt-3"
+      className="flex flex-col-reverse flex-1 max-h-[calc(100vh-9rem)] h-full mx-auto max-w-[43rem] mt-auto overflow-y-scroll px-2 gap-1 pt-3"
       ref={messageEndRef}
     >
       {isLoading && <Loader2 className="size-6 animate-spin m-auto" />}

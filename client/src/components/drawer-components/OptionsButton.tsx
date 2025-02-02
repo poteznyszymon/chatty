@@ -69,6 +69,12 @@ const OptionsButton = () => {
               <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
                 Profile
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+                Invitations
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+                Pending
+              </DropdownMenuItem>
               <DropdownMenuItem className="group" onClick={() => logoutUser()}>
                 <p className="text-red-500 group-hover:underline">Logout</p>
               </DropdownMenuItem>

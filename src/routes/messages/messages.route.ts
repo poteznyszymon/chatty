@@ -123,7 +123,7 @@ messagesRouter.get("/get-messages/:username", verifyAuth, async (c) => {
     )
     .orderBy(messageTable.sentAt);
 
-  return c.json({ success: true, messages: messages });
+  return c.json({ success: true, messages: messages.reverse() });
 });
 
 export default messagesRouter;

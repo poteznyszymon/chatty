@@ -2,6 +2,7 @@ import { formatRelativeDate } from "@/lib/relativeDate";
 import { CheckCheck, Clock } from "lucide-react";
 import ImageInfo from "../shared/ImageInfo";
 import { useState } from "react";
+import MyImage from "../shared/LazyImage";
 
 interface MessageProps {
   message: {
@@ -18,7 +19,7 @@ const MessageComponent = ({ message, myMessage, sending }: MessageProps) => {
 
   return (
     <div
-      className={`p-3 flex flex-col max-w-[15rem] lg:max-w-[17rem] xl:max-w-[20rem] rounded-md border ${
+      className={`p-3 flex  flex-col max-w-[15rem] lg:max-w-[17rem] xl:max-w-[20rem] rounded-md border ${
         myMessage
           ? "ml-auto sm:mr-[3.9rem] bg-primary text-white"
           : "bg-card mr-auto"
@@ -28,9 +29,9 @@ const MessageComponent = ({ message, myMessage, sending }: MessageProps) => {
       {message.image && (
         <div
           onClick={() => setShowImageInfo(true)}
-          className="rounded-md overflow-hidden w-[13rem] h-[9rem] lg:w-[15rem] lg:h-[11rem] xl:w-[18rem] xl:h-[14rem] my-3 cursor-pointer"
+          className="rounded-md overflow-hidden my-3 cursor-pointer"
         >
-          <img src={message.image} className="w-full h-full"></img>
+          <MyImage image={message.image} />
         </div>
       )}
       <div className="flex items-center gap-1">
@@ -47,7 +48,7 @@ const MessageComponent = ({ message, myMessage, sending }: MessageProps) => {
         imageUrl={message.image ?? ""}
         showImageInfo={showImageInfo}
         setShowImageInfo={setShowImageInfo}
-        showDonwload
+        showDonwload={true}
       />
     </div>
   );

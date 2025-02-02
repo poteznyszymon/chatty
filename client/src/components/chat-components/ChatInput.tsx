@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Input } from "../ui/input";
 import DragDrop from "../shared/DragDrop";
 import ImageInfo from "../shared/ImageInfo";
+import useOnKeyPress from "@/hooks/utils/useOnKeyPress";
 
 const ChatInput = () => {
   const { pathname } = useLocation();
@@ -51,10 +52,12 @@ const ChatInput = () => {
   };
 
   const handleSendMessage = () => {
-    if (userInput.trim() && !isLoading) {
+    if ((userInput.trim() || image) && !isLoading) {
       sendMessage();
     }
   };
+
+  useOnKeyPress({ targetKey: "Enter", callback: handleSendMessage });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

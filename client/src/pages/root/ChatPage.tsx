@@ -26,7 +26,7 @@ const ChatPage = () => {
       <Navbar username={username || ""} />
       {!isLoading && !isError && userInContacts && (
         <>
-          <div className={`max-h-[calc(100vh-9rem)] h-full`}>
+          <div className={`max-h-[calc(100vh-9rem)] h-full relative`}>
             <Messages />
             <ChatInput />
           </div>

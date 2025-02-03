@@ -64,7 +64,7 @@ const Messages = () => {
       ))}
       <div
         onClick={() => scrollToBottom(messageEndRef)}
-        className={`absolute transition-all hover:scale-110 flex duration-300  cursor-pointer bg-primary top-[5rem] left-1/2 lg:left-[80rem] -translate-x-1/2  items-center justify-center rounded-full ${
+        className={`absolute transition-all hover:scale-110 flex duration-300 top-5 cursor-pointer bg-primary  left-1/2  -translate-x-1/2  items-center justify-center rounded-full ${
           showScrollButton ? "size-[2rem]" : "size-0"
         } `}
       >

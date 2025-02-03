@@ -14,7 +14,10 @@ const BottomBar = () => {
         className="flex items-center gap-3 cursor-pointer"
       >
         <UserAvatar url={user?.imageUrl || ""} className="size-10" />
-        <h1 className="font-semibold">{user?.username}</h1>
+        <div className="flex gap-1">
+          <p className="text text-muted-foreground">Logged as</p>
+          <h1 className="">{user?.username}</h1>
+        </div>
       </div>
     </div>
   );

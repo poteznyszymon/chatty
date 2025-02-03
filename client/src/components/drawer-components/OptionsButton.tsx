@@ -23,7 +23,7 @@ import useLogout from "@/hooks/auth/useLogout";
 const OptionsButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { setTheme, theme } = useTheme();
-  const { setIsProfileSettingsOpen } = UseLayoutContext();
+  const { setIsProfileSettingsOpen, setIsInvitationsOpen, setIsPendingsOpen } = UseLayoutContext();
   const { logoutUser } = useLogout();
 
   const handleOpenChange = (open: boolean) => {
@@ -71,11 +71,11 @@ const OptionsButton = () => {
                 <User />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+              <DropdownMenuItem onClick={() => setIsInvitationsOpen(true)}>
                 <Mail />
                 Invitations
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setIsProfileSettingsOpen(true)}>
+              <DropdownMenuItem onClick={() => setIsPendingsOpen(true)}>
                 <Clock />
                 Pending
               </DropdownMenuItem>

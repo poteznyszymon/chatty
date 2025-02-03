@@ -35,7 +35,7 @@ const Messages = () => {
       if (senderUsername && message && pathname.slice(1) === senderUsername) {
         queryClient.setQueryData<Message[]>(
           ["messages", `${senderUsername}`],
-          (oldData) => (oldData ? [...oldData, message] : [message])
+          (oldData) => (oldData ? [message, ...oldData] : [message])
         );
       }
     };

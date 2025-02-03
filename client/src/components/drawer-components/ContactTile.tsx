@@ -34,7 +34,7 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
   return (
     <>
       {invitation ? (
-        <div className="flex px-2 items-center gap-3 rounded-md p-1">
+        <div className="flex px-2 py-2 items-center gap-3 rounded-md p-1">
           <UserAvatar
             url={contact.imageUrl || ""}
             className="size-10"
@@ -50,7 +50,7 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
           </div>
         </div>
       ) : pending ? (
-        <div className="flex px-2 items-center gap-3 rounded-md p-1">
+        <div className="flex px-2 py-2 items-center gap-3 rounded-md p-1">
           <UserAvatar
             url={contact.imageUrl || ""}
             className="size-10"
@@ -87,7 +87,7 @@ const ContactTile = ({ contact, invitation, pending }: ContactTileProps) => {
                 setIsUserInfoOpen(false);
               }}
               to={`${contact.username}`}
-              className={`flex px-2 items-center gap-3 hover:text-white hover:bg-primary rounded-md p-1 group ${
+              className={`flex px-2 py-3 items-center gap-3 hover:text-white hover:bg-primary rounded-md p-1 group ${
                 pathname.slice(1) === contact.username
                   ? "bg-primary text-white"
                   : ""

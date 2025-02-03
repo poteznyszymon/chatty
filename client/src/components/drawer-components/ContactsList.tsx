@@ -1,20 +1,14 @@
 import { useState } from "react";
 import useGetContacts from "@/hooks/contacts/useGetContacts";
-import { Clock, UserPlus, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import ContactTile from "./ContactTile";
 import { useActiveUsers } from "@/context/OnlineUsersContext";
-import { Accordion } from "../ui/accordion";
-import CustomAccordionItem from "../shared/CustomAccordionItem";
-import useGetInvitations from "@/hooks/contacts/useGetInvitations";
 import ContactsSkeleton from "./ContactsSkeleton";
-import useGetPending from "@/hooks/contacts/useGetPending";
 
 const ContactsList = () => {
   const { contacts, isError, isLoading } = useGetContacts();
   const { activeUsers } = useActiveUsers();
-  const { invitations, isLoading: isInvitationsLoading } = useGetInvitations();
-  const { pendings, isLoading: isPendingLoading } = useGetPending();
   const [showOnline, setShowOnline] = useState<boolean>(false);
 
   const filteredContacts = showOnline
@@ -59,36 +53,6 @@ const ContactsList = () => {
             filteredContacts.map((contact) => (
               <ContactTile key={contact.id} contact={contact} />
             ))}
-          <Accordion type="multiple">
-            <CustomAccordionItem
-              loading={isInvitationsLoading}
-              Icon={UserPlus}
-              text="Sent Invitations"
-              length={invitations?.length || 0}
-            >
-              {invitations &&
-                invitations.map((item) => (
-                  <ContactTile key={item.id} contact={item} invitation />
-                ))}
-              {!invitations?.length && (
-                <p className="text-muted-foreground">No invitations sended</p>
-              )}
-            </CustomAccordionItem>
-            <CustomAccordionItem
-              loading={isPendingLoading}
-              Icon={Clock}
-              text="Pending Invitations"
-              length={pendings?.length || 0}
-            >
-              {pendings &&
-                pendings.map((item) => (
-                  <ContactTile key={item.id} contact={item} pending />
-                ))}
-              {!pendings?.length && (
-                <p className="text-muted-foreground">No pending invitations</p>
-              )}
-            </CustomAccordionItem>
-          </Accordion>
         </div>
       </div>
     </div>

@@ -5,9 +5,13 @@ interface LayoutContextType {
   isProfileSettingsOpen: boolean;
   isUserInfoOpen: boolean;
   isEditProfileOpen: boolean;
+  isInvitationsOpen: boolean;
+  isPendingsOpen: boolean
   setIsProfileSettingsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsUserInfoOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsInvitationsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPendingsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
@@ -16,6 +20,8 @@ export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
   const [isProfileSettingsOpen, setIsProfileSettingsOpen] = useState(false);
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isInvitationsOpen, setIsInvitationsOpen] = useState(false);
+  const [isPendingsOpen, setIsPendingsOpen] = useState(false);
 
   return (
     <LayoutContext.Provider
@@ -26,6 +32,10 @@ export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
         setIsUserInfoOpen,
         isEditProfileOpen,
         setIsEditProfileOpen,
+        isInvitationsOpen,
+        setIsInvitationsOpen,
+        isPendingsOpen,
+        setIsPendingsOpen,
       }}
     >
       {children}

@@ -22,8 +22,6 @@ const Messages = () => {
   const { scrollPosition } = useScrollPosition("messages-container");
   const showScrollButton = scrollPosition + maxScroll < 800 && maxScroll > 800;
 
-  console.log(scrollPosition, maxScroll);
-
   useEffect(() => {
     const listener = async ({
       senderUsername,

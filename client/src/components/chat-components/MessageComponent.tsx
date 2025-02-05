@@ -8,7 +8,7 @@ interface MessageProps {
   message: {
     content: string;
     sentAt: string;
-    image?: string;
+    image: string | null;
   };
   myMessage: boolean;
   sending?: boolean;

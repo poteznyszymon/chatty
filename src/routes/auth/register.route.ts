@@ -40,6 +40,8 @@ registerRouter.post("/register", async (c) => {
     await createAndSetAccessToken(c, newUser.id.toString());
     await createAndSetRefreshToken(c, newUser.id.toString());
 
+    await db.update(usersTable).set({ lastActive: new Date() }).where(eq(usersTable.id, newUser.id));
+
     return c.json(
       {
         success: true,

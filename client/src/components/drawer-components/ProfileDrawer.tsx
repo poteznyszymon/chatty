@@ -21,7 +21,7 @@ const ProfileDrawer = ({ className }: ProfileDrawerProps) => {
     <div
       className={cn(
         className,
-      `px-3 duration-500 xl:duration-300 transition-all h-full fixed top-0 ${
+        `px-3 duration-500 xl:duration-300 transition-all h-full fixed top-0 ${
           isProfileSettingsOpen ? "left-0" : "-left-[65rem] lg:-left-[26rem]"
         }`
       )}

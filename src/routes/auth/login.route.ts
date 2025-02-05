@@ -1,9 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { loginSchema } from "../../validation/schemas";
-
 import { compare } from "bcrypt";
-
 import { db } from "../../db";
 import { users as usersTable } from "../../db/schema/user";
 import { eq } from "drizzle-orm";
@@ -37,6 +35,8 @@ loginRouter.post("/login", async (c) => {
 
     await createAndSetAccessToken(c, existingUser[0].id.toString());
     await createAndSetRefreshToken(c, existingUser[0].id.toString());
+
+    await db.update(usersTable).set({lastActive: new Date()}).where(eq(usersTable.id, existingUser[0].id));
 
     return c.json(
       {

@@ -5,6 +5,7 @@ import useGetUserData from "@/hooks/users/useGetUserData";
 import { useLocation } from "react-router";
 import UserInfoTile from "../shared/UserInfoTile";
 import { useActiveUsers } from "@/context/OnlineUsersContext";
+import { formatRelativeDate } from "@/lib/relativeDate";
 
 const InfoBar = () => {
   const { isUserInfoOpen, setIsUserInfoOpen } = UseLayoutContext();
@@ -12,9 +13,11 @@ const InfoBar = () => {
   const { user, isLoading } = useGetUserData(pathname.slice(1));
   const { activeUsers } = useActiveUsers();
 
+  const isUserOnline = activeUsers.includes(user?.id.toString() || "");
+
   return (
     <div
-      className={`h-full shadow-lg z-30 px-3 items-center gap-3 flex flex-col w-full md:w-[25rem] bg-card border-l duration-300 transition-all fixed ${
+      className={`h-full shadow-lg z-30 px-3 items-center gap-5 flex flex-col w-full md:w-[25rem] bg-card border-l duration-300 transition-all fixed ${
         isUserInfoOpen ? "right-0" : "-right-[50rem] md:-right-[25rem]"
       }`}
     >
@@ -49,11 +52,25 @@ const InfoBar = () => {
           )}
         </div>
         {!isLoading ? (
-          <p className="text-muted-foreground text-sm">
-            {activeUsers.includes(user?.id.toString() || "")
-              ? "Online"
-              : "Offline"}
-          </p>
+          <div className="flex flex-col gap-3 items-center">
+            {isUserOnline ? (
+              <div className="flex items-center gap-2">
+                <div className="size-2 rounded-full bg-green-500" />
+                <p className="text-muted-foreground text-sm">Online</p>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <div className="size-2 rounded-full bg-red-500" />
+                <p className="text-muted-foreground text-sm">Offline</p>
+              </div>
+            )}
+            {!isUserOnline && (
+              <p className="text-muted-foreground text-sm bg-accent p-3 rounded-md">
+                Last time active{" "}
+                {formatRelativeDate(new Date(user?.lastActive || Date.now()))}
+              </p>
+            )}
+          </div>
         ) : (
           <div className="w-24 h-4 mt-1 rounded-md animate-pulse bg-accent" />
         )}

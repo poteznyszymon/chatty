@@ -64,6 +64,7 @@ userRouter.get("/profile/:username", verifyAuth, async (c) => {
           username: user.username,
           email: user.email,
           imageUrl: user.imageUrl,
+          lastActive: user.lastActive,
         },
       },
       200

@@ -18,7 +18,7 @@ const ImageInfo = ({
 
   return (
     <div
-      className={`absolute top-0 left-0 z-[999] w-full h-full  bg-black/80 flex flex-col duration-300  ${
+      className={`fixed top-0 left-0 z-[999] w-full h-full  bg-black/80 flex flex-col duration-300  ${
         showImageInfo ? "" : "hidden"
       }`}
     >
